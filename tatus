@@ -1,0 +1,23 @@
+[33mcommit bea4ecf85418e58ea3d19af7b6962acbe5f03b6c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Ever Lopez <elmartinez@asefimex.com>
+Date:   Tue Oct 6 16:16:23 2026 -0600
+
+    se elimina carpeta mesa de control
+
+[33mcommit 4a4ce15294f02ef5e9b0bb0f425b0505029bf0d9[m
+Author: Ever Lopez <elmartinez@asefimex.com>
+Date:   Tue Oct 6 16:15:30 2026 -0600
+
+    ajuste en carpeta aplicacion de pagos
+
+[33mcommit 0ad186f43d180337fabd5068556623b23158cf6a[m
+Author: Ever Lopez <elmartinez@asefimex.com>
+Date:   Tue Oct 6 08:18:45 2026 -0600
+
+    estructura basica
+
+[33mcommit 48cd7bd504dd568ce0bac4cbb2a9d5a4266584c0[m
+Author: Ever Lopez <elmartinez@asefimex.com>
+Date:   Tue Oct 6 08:01:09 2026 -0600
+
+    condonaciones listo
