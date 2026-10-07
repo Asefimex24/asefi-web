@@ -5,6 +5,11 @@ document.getElementById("frmPagos").addEventListener("submit", async function (e
 });
 
 async function enviarFormulario() {
+  //obtener elemtno spinner
+  const btn = document.getElementById("btnEnvio");
+  const textoBoton = document.getElementById("btnTexto");
+  const spinner = document.getElementById("btnSpinner");
+
   //obtener el archivo de ficha de comprobante para cobnvertirloa base64
   const archivo = document.getElementById("comprobante").files[0];
   let archivoBase64 = "";
@@ -24,7 +29,7 @@ async function enviarFormulario() {
 
   if (ineAclara) {
     ineBase64 = await convertirBase64(ineAclara);
-    ineNombre = ine.name;
+    ineNombre = ineAclara.name;
     ineMime = ineAclara.type;
   }
 
@@ -55,6 +60,11 @@ async function enviarFormulario() {
   const API_URL = "https://script.google.com/macros/s/AKfycbxdV8ZqaA7zG16f6EHM2XDxoPKhmQP7oShOIuug-qyrKJ73frgCd9eM8mkwTBgYa_Xd/exec";
 
   try {
+    // Desactivar botón y mostrar animación
+    btn.disabled = true;
+    textoBoton.textContent = "Procesando...";
+    spinner.classList.remove("d-none");
+
     const response = await fetch(API_URL, {
       method: "POST",
       // Usamos text/plain para evitar el preflight de CORS y permitir leer la respuesta
@@ -86,6 +96,11 @@ async function enviarFormulario() {
   } catch (error) {
     console.error("Error al realizar el fetch:", error);
     alert("Ocurrió un error al enviar la solicitud.");
+  } finally {
+    // Reactivar botón
+    btn.disabled = false;
+    textoBoton.textContent = "Registrar Pago";
+    spinner.classList.add("d-none");
   }
 }
 

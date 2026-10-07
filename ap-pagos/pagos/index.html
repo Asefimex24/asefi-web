@@ -6,6 +6,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de pago</title>
+    <style>
+      #btnEnvio:disabled {
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+    </style>
   </head>
 
   <body class="bg-light">
@@ -109,7 +115,10 @@
               <textarea id="comentario" rows="4" class="form-control"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-success">Registrar Pago</button>
+            <button type="submit" id="btnEnvio" class="btn btn-success">
+              <span id="btnTexto">Registrar Pago</span>
+              <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+            </button>
           </form>
         </div>
       </div>
