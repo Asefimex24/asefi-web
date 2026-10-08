@@ -20,7 +20,7 @@ async function enviarFormulario() {
     comentario: document.getElementById("comentario").value,
   };
 
-  console.log("Datos a enviar:", datos); 
+  console.log("Datos a enviar:", datos);
 
   const API_URL = "https://script.google.com/macros/s/AKfycbxdV8ZqaA7zG16f6EHM2XDxoPKhmQP7oShOIuug-qyrKJ73frgCd9eM8mkwTBgYa_Xd/exec";
 

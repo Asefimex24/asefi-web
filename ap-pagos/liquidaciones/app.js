@@ -150,3 +150,43 @@ function convertirBase64(file) {
     reader.onerror = reject;
   });
 }
+
+document.getElementById("tipoDeposito").addEventListener("change", mostrarCamposPago);
+
+function mostrarCamposPago() {
+  const tipoPago = document.getElementById("tipoDeposito").value;
+
+  const divOficinaPago = document.getElementById("divOficinaPago");
+  const txtoficinaPago = document.getElementById("oficinaPago");
+
+  const divFolioPago = document.getElementById("divFolioPago");
+  const txtFolioPago = document.getElementById("folioPago");
+
+  const divChPago = document.getElementById("divChPago");
+  const txtchPago = document.getElementById("chPago");
+
+  // Ocultar todos los grupos
+  divOficinaPago.style.display = "none";
+  divFolioPago.style.display = "none";
+  divChPago.style.display = "none";
+
+  // Quitar required
+  txtoficinaPago.removeAttribute("required");
+  txtFolioPago.removeAttribute("required");
+  txtchPago.removeAttribute("required");
+
+  // Limpiar valores opcionalmente
+  txtoficinaPago.value = "";
+  txtFolioPago.value = "";
+  txtchPago.value = "";
+
+  // BANSEFI
+  if (tipoPago === "BANSEFI") {
+    divOficinaPago.style.display = "block";
+    divFolioPago.style.display = "block";
+    divChPago.style.display = "block";
+    txtoficinaPago.setAttribute("required", "required");
+    txtFolioPago.setAttribute("required", "required");
+    txtchPago.setAttribute("required", "required");
+  }
+}
