@@ -17,24 +17,12 @@
             </div>
 
             <div class="card-body">
-                <form id="frmPagos">
+                <form id="frmGuardavalores">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label>Fecha de Solicitud</label>
                             <input type="text" id="fechaHora" name="fechaHora" class="form-control" readonly />
                         </div>
-
-                        <!-- <div class="col-md-4 mb-3">
-                            <label>Tipo de Pago</label>
-                            <select id="tipoPago" class="form-select" required>
-                                <option value="">Seleccione</option>
-                                <option value="BANORTE">BANORTE</option>
-                                <option value="OXXO">OXXO</option>
-                                <option value="TELECOMM">TELECOMM</option>
-                                <option value="BANSEFI">BANSEFI</option>
-                                <option value="PAGO-TERCEROS">PAGO-TERCEROS</option>
-                            </select>
-                        </div> -->
 
                         <div class="col-md-4 mb-3">
                             <label>Tel del Ejecutivo</label>
@@ -57,7 +45,7 @@
                         
                         <div class="col-md-3 mb-3">
                             <label>Sucursal</label>
-                            <select id="Sucursales" class="form-select" required>
+                            <select id="sucursales" class="form-select" required>
                                 <option value="">Seleccione la sucursal</option>
                                 <option value="TUXTLA GUTIERREZ">TUXTLA GUTIERREZ</option>
                                 <option value="TONALA">TONALA</option>
@@ -113,7 +101,11 @@
                         <textarea id="comentario" rows="4" class="form-control"></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success">Solicitar</button>
+                    <button type="submit" id="btnSolicitar" class="btn btn-success">
+                        <span id="btnTexto">Solicitar</span>
+                        <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                    </button>
+
                 </form>
             </div>
         </div>
