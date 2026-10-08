@@ -1,3 +1,4 @@
+window.onload = establecerFechaActual;
 function establecerFechaActual() {
   const ahora = new Date();
 
@@ -17,8 +18,6 @@ function establecerFechaActual() {
 
   document.getElementById("fechaHora").value = fechaCompleta;
 }
-
-window.onload = establecerFechaActual;
 
 document.getElementById("frmPagos").addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -79,10 +78,11 @@ async function enviarFormulario() {
     referenciaPago: document.getElementById("referenciaPago").value,
     credito: document.getElementById("credito").value,
     importe: document.getElementById("importe").value,
-    producto: document.getElementById("producto");
+    producto: document.getElementById("producto").value,
     oficinaPago: document.getElementById("oficinaPago").value,
     folioPago: document.getElementById("folioPago").value,
     chPago: document.getElementById("chPago").value,
+    vistoBueno: document.getElementById("vistoBueno").value,
     comentario: document.getElementById("comentario").value,
     fichaNombre: fichaNombre,
     fichaMime: fichaMime,
@@ -95,7 +95,7 @@ async function enviarFormulario() {
     dorMime: dorMime,
   };
 
-  const API_URL = "https://script.google.com/macros/s/AKfycbxdV8ZqaA7zG16f6EHM2XDxoPKhmQP7oShOIuug-qyrKJ73frgCd9eM8mkwTBgYa_Xd/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbwxgaREjMSGsNz5rRy3tRNwfsxJTRfHgrIFJDhfOrtpvq2vEOpKWdbrsCOCtbTaEmJF/exec";
 
   try {
     // Desactivar botón y mostrar animación
@@ -140,4 +140,13 @@ async function enviarFormulario() {
     textoBoton.textContent = "Registrar Pago";
     spinner.classList.add("d-none");
   }
+}
+
+function convertirBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
 }
