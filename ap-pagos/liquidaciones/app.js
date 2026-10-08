@@ -1,0 +1,143 @@
+function establecerFechaActual() {
+  const ahora = new Date();
+
+  const anio = ahora.getFullYear();
+
+  const mes = String(ahora.getMonth() + 1).padStart(2, "0");
+
+  const dia = String(ahora.getDate()).padStart(2, "0");
+
+  const hora = String(ahora.getHours()).padStart(2, "0");
+
+  const minutos = String(ahora.getMinutes()).padStart(2, "0");
+
+  const segundos = String(ahora.getSeconds()).padStart(2, "0");
+
+  const fechaCompleta = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
+
+  document.getElementById("fechaHora").value = fechaCompleta;
+}
+
+window.onload = establecerFechaActual;
+
+document.getElementById("frmPagos").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  await enviarFormulario();
+});
+
+async function enviarFormulario() {
+  //obtener elemtno spinner
+  const btn = document.getElementById("btnEnvio");
+  const textoBoton = document.getElementById("btnTexto");
+  const spinner = document.getElementById("btnSpinner");
+
+  //obtener los archivos para convertirlo a b64
+  const ficha = document.getElementById("fichaDeposito").files[0];
+  const captura = document.getElementById("capturaSafi").files[0];
+  const dor = document.getElementById("adjuntaDor").files[0];
+
+  let fichaBase64 = "";
+  let fichaoNombre = "";
+  let fichavoMime = "";
+
+  if (ficha) {
+    fichaBase64 = await convertirBase64(ficha);
+    fichaNombre = ficha.name;
+    fichaMime = ficha.type;
+  }
+
+  let capturaBase64 = "";
+  let capturaNombre = "";
+  let capturaeMime = "";
+
+  if (captura) {
+    capturaBase64 = await convertirBase64(captura);
+    capturaNombre = captura.name;
+    capturaMime = captura.type;
+  }
+
+  let dorBase64 = "";
+  let dorNombre = "";
+  let dorMime = "";
+
+  if (dor) {
+    dorBase64 = await convertirBase64(dor);
+    dorNombre = dor.name;
+    dorMime = dor.type;
+  }
+
+  //generar array datos
+  const datos = {
+    fechaHora: document.getElementById("fechaHora").value,
+    tipoDeposito: document.getElementById("tipoDeposito").value,
+    telEjecutivo: document.getElementById("telEjecutivo").value,
+    correoEjecutivo: document.getElementById("correoEjecutivo").value,
+    nombreEjecutivo: document.getElementById("nombreEjecutivo").value,
+    nombreCliente: document.getElementById("nombreCliente").value,
+    fechaDeposito: document.getElementById("fechaDeposito").value,
+    referenciaPago: document.getElementById("referenciaPago").value,
+    credito: document.getElementById("credito").value,
+    importe: document.getElementById("importe").value,
+    producto: document.getElementById("producto");
+    oficinaPago: document.getElementById("oficinaPago").value,
+    folioPago: document.getElementById("folioPago").value,
+    chPago: document.getElementById("chPago").value,
+    comentario: document.getElementById("comentario").value,
+    fichaNombre: fichaNombre,
+    fichaMime: fichaMime,
+    fichaBase64: fichaBase64,
+    capturaBase64: capturaBase64,
+    capturaNombre: capturaNombre,
+    capturaMime: capturaMime,
+    dorBase64: dorBase64,
+    dorNombre: dorNombre,
+    dorMime: dorMime,
+  };
+
+  const API_URL = "https://script.google.com/macros/s/AKfycbxdV8ZqaA7zG16f6EHM2XDxoPKhmQP7oShOIuug-qyrKJ73frgCd9eM8mkwTBgYa_Xd/exec";
+
+  try {
+    // Desactivar botón y mostrar animación
+    btn.disabled = true;
+    textoBoton.textContent = "Procesando...";
+    spinner.classList.remove("d-none");
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      // Usamos text/plain para evitar el preflight de CORS y permitir leer la respuesta
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify(datos),
+    });
+
+    // Obtenemos el texto/JSON devuelto por Apps Script
+    const resultado = await response.json();
+
+    if (resultado.success) {
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Solicitud Registrada",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // alert(`Solicitud enviada correctamente para el cliente ${resultado.cliente}. Fila guardada: ${resultado.fila}`);
+      document.getElementById("frmPagos").reset();
+      establecerFechaActual();
+    } else {
+      // Muestra el mensaje de error si ocurrió una excepción en Apps Script
+      alert("Error en el servidor: " + (resultado.error || "Ocurrió un problema desconocido"));
+    }
+  } catch (error) {
+    console.error("Error al realizar el fetch:", error);
+    alert("Ocurrió un error al enviar la solicitud.");
+  } finally {
+    // Reactivar botón
+    btn.disabled = false;
+    textoBoton.textContent = "Registrar Pago";
+    spinner.classList.add("d-none");
+  }
+}
