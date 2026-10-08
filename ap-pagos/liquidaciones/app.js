@@ -3,23 +3,16 @@ function establecerFechaActual() {
   const ahora = new Date();
 
   const anio = ahora.getFullYear();
-
   const mes = String(ahora.getMonth() + 1).padStart(2, "0");
-
   const dia = String(ahora.getDate()).padStart(2, "0");
-
   const hora = String(ahora.getHours()).padStart(2, "0");
-
   const minutos = String(ahora.getMinutes()).padStart(2, "0");
-
   const segundos = String(ahora.getSeconds()).padStart(2, "0");
-
   const fechaCompleta = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
-
   document.getElementById("fechaHora").value = fechaCompleta;
 }
 
-document.getElementById("frmPagos").addEventListener("submit", async function (e) {
+document.getElementById("frmLiquidaciones").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   await enviarFormulario();
@@ -79,9 +72,9 @@ async function enviarFormulario() {
     credito: document.getElementById("credito").value,
     importe: document.getElementById("importe").value,
     producto: document.getElementById("producto").value,
-    oficinaPago: document.getElementById("oficinaPago").value,
-    folioPago: document.getElementById("folioPago").value,
-    chPago: document.getElementById("chPago").value,
+    oficinaDeposito: document.getElementById("oficinaPago").value,
+    folioDeposito: document.getElementById("folioPago").value,
+    chDeposito: document.getElementById("chPago").value,
     vistoBueno: document.getElementById("vistoBueno").value,
     comentario: document.getElementById("comentario").value,
     fichaNombre: fichaNombre,
@@ -124,16 +117,30 @@ async function enviarFormulario() {
         timer: 1500,
       });
 
-      // alert(`Solicitud enviada correctamente para el cliente ${resultado.cliente}. Fila guardada: ${resultado.fila}`);
-      document.getElementById("frmPagos").reset();
+      document.getElementById("frmLiquidaciones").reset();
       establecerFechaActual();
+      mostrarCamposPago();
     } else {
       // Muestra el mensaje de error si ocurrió una excepción en Apps Script
-      alert("Error en el servidor: " + (resultado.error || "Ocurrió un problema desconocido"));
+      // alert("Error en el servidor: " + (resultado.error || "Ocurrió un problema desconocido"));
+      Swal.fire({
+        position: "top-center",
+        icon: "error",
+        title: "Error en el servidor: " + (resultado.error || "Ocurrió un problema desconocido"),
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   } catch (error) {
     console.error("Error al realizar el fetch:", error);
-    alert("Ocurrió un error al enviar la solicitud.");
+    // alert("Ocurrió un error al enviar la solicitud.");
+    Swal.fire({
+      position: "top-center",
+      icon: "error",
+      title: "Ocurrió un error al enviar la solicitud.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   } finally {
     // Reactivar botón
     btn.disabled = false;
