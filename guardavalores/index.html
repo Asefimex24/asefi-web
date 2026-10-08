@@ -15,13 +15,13 @@
           <h4>Solicitud de Documento (Guardavalores)</h4>
         </div>
 
-            <div class="card-body">
-                <form id="frmGuardavalores">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label>Fecha de Solicitud</label>
-                            <input type="text" id="fechaHora" name="fechaHora" class="form-control" readonly />
-                        </div>
+        <div class="card-body">
+          <form id="frmGuardavalores">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label>Fecha de Solicitud</label>
+                <input type="text" id="fechaHora" name="fechaHora" class="form-control" readonly />
+              </div>
 
               <div class="col-md-4 mb-3">
                 <label>Tel del Ejecutivo</label>
@@ -43,7 +43,7 @@
 
               <div class="col-md-3 mb-3">
                 <label>Sucursal</label>
-                <select id="Sucursales" class="form-select" required>
+                <select id="sucursal" class="form-select" required>
                   <option value="">Seleccione la sucursal</option>
                   <option value="TUXTLA GUTIERREZ">TUXTLA GUTIERREZ</option>
                   <option value="TONALA">TONALA</option>
@@ -89,21 +89,19 @@
                   <option value="Visita domiciliar">Visita domiciliar</option>
                 </select>
               </div>
-            </div>
 
-            <div class="mb-3">
-              <label>Comentario</label>
-              <textarea id="comentario" rows="4" class="form-control"></textarea>
+              <div class="col-md-3 mb-3">
+                <label>Motivo de la Solicitud</label>
+                <input type="text" id="motivo" class="form-control" />
+              </div>
             </div>
-
-                    <button type="submit" id="btnSolicitar" class="btn btn-success">
-                        <span id="btnTexto">Solicitar</span>
-                        <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
-                    </button>
-
-                </form>
-            </div>
+            <button type="submit" id="btnSolicitar" class="btn btn-success">
+              <span id="btnTexto">Solicitar</span>
+              <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+            </button>
+          </form>
         </div>
+      </div>
     </div>
 
     <script src="app.js"></script>

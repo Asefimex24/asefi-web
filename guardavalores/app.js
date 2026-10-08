@@ -10,19 +10,19 @@ async function enviarFormulario() {
 
   const datos = {
     fechaHora: document.getElementById("fechaHora").value,
-    telEjecutivo: document.getElementById("telEjecutivo").value,
+    telefonoEjecutivo: document.getElementById("telEjecutivo").value,
     nombreEjecutivo: document.getElementById("nombreEjecutivo").value,
     correoEjecutivo: document.getElementById("correoEjecutivo").value,
-    sucursales: document.getElementById("sucursales").value,
+    sucursal: document.getElementById("sucursal").value,
     nombreCliente: document.getElementById("nombreCliente").value,
     credito: document.getElementById("credito").value,
     tipoDocumento: document.getElementById("tipoDocumento").value,
-    comentario: document.getElementById("comentario").value,
+    motivo: document.getElementById("motivo").value,
   };
 
   console.log("Datos a enviar:", datos);
 
-  const API_URL = "https://script.google.com/macros/s/AKfycbxdV8ZqaA7zG16f6EHM2XDxoPKhmQP7oShOIuug-qyrKJ73frgCd9eM8mkwTBgYa_Xd/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbw-1S_Tit2y1uvzBT40MIgrt5Ych4KsT42bfsW5gGoEhX3QFtJY7vt-3VdH_laOKo-g-w/exec";
 
   try {
     btn.disabled = true;
@@ -71,8 +71,10 @@ async function enviarFormulario() {
   }
 }
 
+window.onload = establecerFechaActual;
 function establecerFechaActual() {
   const ahora = new Date();
+
   const anio = ahora.getFullYear();
   const mes = String(ahora.getMonth() + 1).padStart(2, "0");
   const dia = String(ahora.getDate()).padStart(2, "0");
@@ -82,5 +84,3 @@ function establecerFechaActual() {
   const fechaCompleta = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
   document.getElementById("fechaHora").value = fechaCompleta;
 }
-
-establecerFechaActual();
