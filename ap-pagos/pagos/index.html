@@ -1,36 +1,169 @@
-<!doctype html>
+
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Registro de pago</title>
+    <title>Registro de Pago</title>
+    
     <style>
+      :root {
+        --corporate-blue: #0f172a;
+        --corporate-accent: #2563eb;
+        --corporate-bg: #f8fafc;
+        --card-border: #e2e8f0;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--corporate-bg);
+        color: #334155;
+      }
+
+      .header-card {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 1.75rem 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .section-card {
+        background: #ffffff;
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+        transition: all 0.2s ease;
+      }
+
+      .section-card:hover {
+        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+      }
+
+      .section-card .card-header-custom {
+        background-color: #ffffff;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 1rem 1.5rem;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .section-card .card-header-custom h5 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--corporate-blue);
+      }
+
+      .section-card .card-header-custom i {
+        color: var(--corporate-accent);
+        font-size: 1.1rem;
+      }
+
+      .section-card .card-body {
+        padding: 1.5rem;
+      }
+
+      .form-label {
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: #475569;
+        margin-bottom: 0.4rem;
+      }
+
+      .form-control, .form-select {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 0.6rem 0.85rem;
+        font-size: 0.925rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+
+      .form-control:focus, .form-select:focus {
+        border-color: var(--corporate-accent);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+
+      .form-control[readonly] {
+        background-color: #f1f5f9;
+        color: #64748b;
+      }
+
+      .required-asterisk {
+        color: #ef4444;
+        margin-left: 2px;
+      }
+
+      .btn-corporate {
+        background-color: var(--corporate-accent);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        transition: all 0.2s ease;
+      }
+
+      .btn-corporate:hover:not(:disabled) {
+        background-color: #1d4ed8;
+        color: #ffffff;
+        box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+        transform: translateY(-1px);
+      }
+
       #btnEnvio:disabled {
         cursor: not-allowed;
-        opacity: 0.8;
+        opacity: 0.7;
       }
     </style>
   </head>
 
-  <body class="bg-light">
-    <div class="container mt-4">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-          <h4>Registro de Pago de Crédito</h4>
+  <body class="py-4 py-md-5">
+    <div class="container" style="max-width: 960px;">
+      
+      <!-- Encabezado Principal -->
+      <div class="header-card mb-4 text-center text-md-start d-md-flex align-items-center justify-content-between">
+        <div>
+          <h3 class="mb-1 fw-bold"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Registro de Pago de Crédito</h3>
+          <!-- <p class="mb-0 text-white-50 small">Gestión institucional de comprobantes y referencias de pago</p> -->
         </div>
+        <!-- <div class="mt-3 mt-md-0">
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill">
+            Módulo Oficial
+          </span>
+        </div> -->
+      </div>
 
-        <div class="card-body">
-          <form id="frmPagos">
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label>Fecha de Registro</label>
+      <form id="frmPagos">
+        
+        <!-- SECCIÓN 1: Información General y del Cliente -->
+        <div class="section-card">
+          <div class="card-header-custom">
+            <i class="fa-solid fa-user-check"></i>
+            <h5>1. Información General y del Cliente</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Fecha de Registro</label>
                 <input type="text" id="fechaHora" name="fechaHora" class="form-control" readonly />
               </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Tipo de Pago</label>
+              <div class="col-md-4">
+                <label class="form-label">Tipo de Pago <span class="required-asterisk">*</span></label>
                 <select id="tipoPago" class="form-select" required>
                   <option value="">Seleccione</option>
                   <option value="BANORTE">BANORTE</option>
@@ -41,89 +174,147 @@
                 </select>
               </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Tel del Ejecutivo</label>
-                <input type="text" id="telEjecutivo" class="form-control" />
+              <!-- Teléfono del Ejecutivo (Solo Números Enteros) -->
+              <div class="col-md-4">
+                <label class="form-label">Tel del Ejecutivo</label>
+                <input 
+                  type="text" 
+                  id="telEjecutivo" 
+                  class="form-control" 
+                  placeholder="Ej. 5512345678" 
+                  inputmode="numeric" 
+                  pattern="[0-9]*" 
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                />
               </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Nombre del Cliente</label>
-                <input type="text" id="nombreCliente" class="form-control" required />
+              <div class="col-md-12">
+                <label class="form-label">Nombre del Cliente <span class="required-asterisk">*</span></label>
+                <input type="text" id="nombreCliente" class="form-control" placeholder="Nombre completo del cliente" required />
               </div>
             </div>
+          </div>
+        </div>
 
-            <div class="row">
-              <div class="col-md-3 mb-3">
-                <label>Fecha Pago</label>
+        <!-- SECCIÓN 2: Detalle y Comprobantes de Pago -->
+        <div class="section-card">
+          <div class="card-header-custom">
+            <i class="fa-solid fa-receipt"></i>
+            <h5>2. Detalle y Comprobantes del Pago</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Fecha Pago</label>
                 <input type="date" id="fechaPago" class="form-control" />
               </div>
 
-              <div class="col-md-3 mb-3">
-                <label>No. de Crédito</label>
-                <input type="text" id="credito" class="form-control" />
+              <!-- Número de Crédito (Solo Números Enteros) -->
+              <div class="col-md-4">
+                <label class="form-label">No. de Crédito</label>
+                <input 
+                  type="text" 
+                  id="credito" 
+                  class="form-control" 
+                  placeholder="Número de crédito" 
+                  inputmode="numeric" 
+                  pattern="[0-9]*" 
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                />
               </div>
 
-              <div class="col-md-3 mb-3">
-                <label>Importe del Pago</label>
-                <input type="number" step="0.01" id="importe" class="form-control" />
+              <div class="col-md-4">
+                <label class="form-label">Importe del Pago</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light text-muted">$</span>
+                  <input type="number" step="0.01" id="importe" class="form-control" placeholder="0.00" />
+                </div>
               </div>
-              <div id="divReferenciaPago" class="col-md-4 mb-3" style="display: none">
-                <label>Referencia de Pago</label>
+
+              <!-- Campos Condicionales -->
+              <div id="divReferenciaPago" class="col-md-6" style="display: none">
+                <label class="form-label">Referencia de Pago</label>
                 <input type="text" id="referenciaPago" class="form-control" placeholder="Captura la referencia" />
               </div>
 
-              <div id="divOficinaPago" class="col-md-4 mb-3" style="display: none">
-                <label>Numero de Oficina</label>
+              <div id="divOficinaPago" class="col-md-6" style="display: none">
+                <label class="form-label">Numero de Oficina</label>
                 <input type="text" id="oficinaPago" class="form-control" placeholder="Captura el numero de oficina Bansefi" />
               </div>
 
-              <div id="divFolioPago" class="col-md-4 mb-3" style="display: none">
-                <label>Folio Pago Bansefi</label>
+              <div id="divFolioPago" class="col-md-6" style="display: none">
+                <label class="form-label">Folio Pago Bansefi</label>
                 <input type="text" id="folioPago" class="form-control" placeholder="Captura el folio de pago Bansefi" />
               </div>
 
-              <div id="divChPago" class="col-md-4 mb-3" style="display: none">
-                <label>Num. CH Bansefi</label>
+              <div id="divChPago" class="col-md-6" style="display: none">
+                <label class="form-label">Num. CH Bansefi</label>
                 <input type="text" id="chPago" class="form-control" placeholder="Captura el num de CH Bansefi" />
               </div>
 
-              <div class="mb-3">
-                <label>Comprobante</label>
-                <input type="file" id="comprobante" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
+              <!-- Carga de Archivos -->
+              <div class="col-md-6">
+                <label class="form-label">Comprobante <span class="required-asterisk">*</span></label>
+                <input type="file" name="comprobante" id="comprobante" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
+                <div class="form-text">Formatos permitidos: PDF, JPG, PNG</div>
               </div>
 
-              <div class="mb-3" id="divAclaracion" style="display: none">
-                <label>INE Aclaración</label>
-                <input type="file" id="ineAclaracion" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label>Correo del ejecutivo</label>
-                <input type="email" id="correoEjecutivo" class="form-control" />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>Nombre del Ejecutivo</label>
-                <input type="text" id="nombreEjecutivo" class="form-control" />
+              <div class="col-md-6" id="divAclaracion" style="display: none">
+                <label class="form-label">INE Aclaración <span class="required-asterisk">*</span></label>
+                <input type="file" name="ineAclaracion" id="ineAclaracion" class="form-control" accept=".pdf,.jpg,.jpeg,.png"/>
+                <div class="form-text">Adjunte identificación oficial</div>
               </div>
             </div>
-
-            <div class="mb-3">
-              <label>Comentario</label>
-              <textarea id="comentario" rows="4" class="form-control"></textarea>
-            </div>
-
-            <button type="submit" id="btnEnvio" class="btn btn-success">
-              <span id="btnTexto">Registrar Pago</span>
-              <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
-            </button>
-          </form>
+          </div>
         </div>
-      </div>
+
+        <!-- SECCIÓN 3: Datos del Ejecutivo -->
+        <div class="section-card">
+          <div class="card-header-custom">
+            <i class="fa-solid fa-user-tie"></i>
+            <h5>3. Datos del Ejecutivo de Cuenta</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre del Ejecutivo</label>
+                <input type="text" id="nombreEjecutivo" class="form-control" placeholder="Nombre de quien registra" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Correo del ejecutivo</label>
+                <input type="email" id="correoEjecutivo" class="form-control" placeholder="ejemplo@empresa.com" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 4: Comentarios / Observaciones -->
+        <div class="section-card">
+          <div class="card-header-custom">
+            <i class="fa-solid fa-comment-dots"></i>
+            <h5>4. Observaciones</h5>
+          </div>
+          <div class="card-body">
+            <div>
+              <label class="form-label">Comentario</label>
+              <textarea id="comentario" rows="3" class="form-control" placeholder="Escriba aquí notas adicionales o aclaraciones respecto al pago..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de Envío -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+          <button type="submit" id="btnEnvio" class="btn btn-corporate px-5 py-2 fs-6">
+            <span id="btnTexto"><i class="fa-solid fa-paper-plane me-2"></i>Registrar Pago</span>
+            <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+
+      </form>
     </div>
 
+    <!-- Tu script JS original -->
     <script src="app.js"></script>
   </body>
 </html>
