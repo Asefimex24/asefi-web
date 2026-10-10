@@ -3,153 +3,304 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Liquidación</title>
+
     <style>
+      :root {
+        --corporate-primary: #1e293b;
+        --corporate-secondary: #0f172a;
+        --corporate-accent: #2563eb;
+        --bg-body: #f1f5f9;
+      }
+
+      body {
+        background-color: var(--bg-body);
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: #334155;
+      }
+
+      .card-main-header {
+        background: linear-gradient(135deg, var(--corporate-primary) 0%, var(--corporate-secondary) 100%);
+        border-bottom: 3px solid var(--corporate-accent);
+      }
+
+      .section-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease-in-out;
+      }
+
+      .section-title {
+        color: var(--corporate-primary);
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .form-label {
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: #475569;
+        margin-bottom: 0.35rem;
+      }
+
+      .form-control,
+      .form-select {
+        border-color: #cbd5e1;
+        font-size: 0.925rem;
+        padding: 0.55rem 0.75rem;
+        border-radius: 0.375rem;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--corporate-accent);
+        box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15);
+      }
+
+      .form-control[readonly] {
+        background-color: #f8fafc;
+        color: #64748b;
+      }
+
+      .btn-corporate {
+        background-color: var(--corporate-accent);
+        border-color: var(--corporate-accent);
+        color: #ffffff;
+        font-weight: 600;
+        padding: 0.65rem 1.75rem;
+        border-radius: 0.375rem;
+        transition: all 0.2s;
+      }
+
+      .btn-corporate:hover {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+        color: #ffffff;
+      }
+
       #btnEnvio:disabled {
         cursor: not-allowed;
-        opacity: 0.8;
+        opacity: 0.7;
       }
     </style>
   </head>
 
-  <body class="bg-light">
-    <div class="container mt-4">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-          <h4>Registro de Pago de Crédito</h4>
+  <body>
+    <div class="container py-4 my-3">
+      <!-- Tarjeta Principal / Encabezado del Sistema -->
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header card-main-header text-white p-4">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-shield-check fs-2 me-3 text-info"></i>
+            <div>
+              <h3 class="mb-0 fw-bold">Registro de Liquidación de Crédito</h3>
+              <!-- <small class="text-light opacity-75">Sistema Módulo de Liquidaciones y Gestión Operativa</small> -->
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="card-body">
-          <form id="frmLiquidaciones">
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label>Fecha de Registro</label>
+      <!-- Formulario Principal -->
+      <form id="frmLiquidaciones">
+        <!-- SECCIÓN 1: Información General y Ejecutivo -->
+        <div class="card section-card bg-white p-4 mb-4">
+          <div class="section-title d-flex align-items-center"><i class="bi bi-person-badge me-2 text-primary"></i> Información General y del Ejecutivo</div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Fecha de Registro</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted"><i class="bi bi-clock"></i></span>
                 <input type="text" id="fechaHora" name="fechaHora" class="form-control" readonly />
               </div>
+            </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Tipo de Depósito</label>
-                <select id="tipoDeposito" class="form-select" required>
-                  <option value="">Seleccione</option>
-                  <option value="BANORTE">BANORTE</option>
-                  <option value="BANORTE-CEP">BANORTE-CEP</option>
-                  <option value="TELECOMM">TELECOMM</option>
-                  <option value="OXXO">OXXO</option>
-                  <option value="BANSEFI">BANSEFI</option>
-                </select>
-              </div>
+            <div class="col-md-4">
+              <label class="form-label">Tipo de Depósito <span class="text-danger">*</span></label>
+              <select id="tipoDeposito" class="form-select" required>
+                <option value="">Seleccione tipo...</option>
+                <option value="BANORTE">BANORTE</option>
+                <option value="BANORTE-CEP">BANORTE-CEP</option>
+                <option value="TELECOMM">TELECOMM</option>
+                <option value="OXXO">OXXO</option>
+                <option value="BANSEFI">BANSEFI</option>
+              </select>
+            </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Tel del Ejecutivo</label>
-                <input type="text" id="telEjecutivo" class="form-control" />
-              </div>
+            <div class="col-md-4">
+              <label class="form-label">Nombre del Ejecutivo</label>
+              <input type="text" id="nombreEjecutivo" class="form-control" placeholder="Ej. Juan Pérez" />
+            </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Correo del ejecutivo</label>
-                <input type="email" id="correoEjecutivo" class="form-control" />
-              </div>
+            <div class="col-md-4">
+              <label class="form-label">Tel del Ejecutivo</label>
+              <input
+                type="tel"
+                id="telEjecutivo"
+                class="form-control"
+                placeholder="10 dígitos (ej. 5512345678)"
+                maxlength="10"
+                minlength="10"
+                pattern="[0-9]{10}"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                title="Debe ingresar exactamente 10 dígitos numéricos"
+              />
+            </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Nombre del Ejecutivo</label>
-                <input type="text" id="nombreEjecutivo" class="form-control" />
-              </div>
+            <div class="col-md-4">
+              <label class="form-label">Correo del Ejecutivo</label>
+              <input
+                type="email"
+                id="correoEjecutivo"
+                class="form-control"
+                placeholder="ejecutivo@empresa.com"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                title="Ingrese una dirección de correo electrónico válida (ejemplo@dominio.com)"
+              />
+            </div>
 
-              <div class="col-md-4 mb-3">
-                <label>Nombre del Cliente</label>
-                <input type="text" id="nombreCliente" class="form-control" required />
+            <div class="col-md-4">
+              <label class="form-label">Nombre del Cliente <span class="text-danger">*</span></label>
+              <input type="text" id="nombreCliente" class="form-control" placeholder="Nombre completo del titular" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 2: Detalle del Crédito y Operación -->
+        <div class="card section-card bg-white p-4 mb-4">
+          <div class="section-title d-flex align-items-center"><i class="bi bi-credit-card-2-front me-2 text-primary"></i> Datos del Crédito y Operación</div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Fecha Depósito</label>
+              <input type="date" id="fechaDeposito" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">No. de Crédito</label>
+              <input
+                type="text"
+                id="credito"
+                class="form-control"
+                placeholder="Solo números enteros"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                title="Solo se permiten números enteros sin letras ni decimales"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Importe del Pago</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted">$</span>
+                <input type="number" step="0.01" id="importe" class="form-control" placeholder="0.00" />
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label>Fecha Depósito</label>
-                <input type="date" id="fechaDeposito" class="form-control" />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>No. de Crédito</label>
-                <input type="text" id="credito" class="form-control" />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>Importe del Pago</label>
-                <input type="number" step="0.01" id="importe" class="form-control" />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>Producto</label>
-                <select id="producto" class="form-select" required>
-                  <option value="">Seleccione</option>
-                  <option value="C-MOVIL">C-MOVIL</option>
-                  <option value="C-FACIL">C-FACIL</option>
-                  <option value="C-ESPCIAL">C-ESPECIAL</option>
-                  <option value="C-EMPRENDEDOR">C-EMPRENDEDOR</option>
-                  <option value="C-COSECHA">C-COSECHA</option>
-                  <option value="C-AUTO">C-AUTO</option>
-                  <option value="C-DISTRIBUIDOR">C-DISTRIBUIDOR</option>
-                  <option value="CREDICONTADO">CREDICONTADO</option>
-                  <option value="C-LIQUIDEZ">C-LIQUIDEZ</option>
-                  <option value="C-PREFERENTE">C-PREFERENTE</option>
-                </select>
-              </div>
-
-              <div id="divReferenciaPago" class="col-md-4 mb-3" style="display: none">
-                <label>Referencia de Pago</label>
-                <input type="text" id="referenciaPago" class="form-control" placeholder="Captura la referencia" />
-              </div>
-
-              <div id="divOficinaPago" class="col-md-4 mb-3" style="display: none">
-                <label>Numero de Oficina</label>
-                <input type="text" id="oficinaPago" class="form-control" placeholder="Captura el numero de oficina Bansefi" />
-              </div>
-
-              <div id="divFolioPago" class="col-md-4 mb-3" style="display: none">
-                <label>Folio Pago Bansefi</label>
-                <input type="text" id="folioPago" class="form-control" placeholder="Captura el folio de pago Bansefi" />
-              </div>
-
-              <div id="divChPago" class="col-md-4 mb-3" style="display: none">
-                <label>Num. CH Bansefi</label>
-                <input type="text" id="chPago" class="form-control" placeholder="Captura el num de CH Bansefi" />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>Ficha de Depósito</label>
-                <input type="file" id="fichaDeposito" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>Captura de SAFI</label>
-                <input type="file" id="capturaSafi" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>Adjunta la D.O.R.</label>
-                <input type="file" id="adjuntaDor" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
-              </div>
-
-              <div class="col-md-4 mb-3">
-                <label>Quin da el Vo.Bo.?</label>
-                <input type="text" id="vistoBueno" class="form-control" placeholder="Quien da el visto bueno?" />
-              </div>
+            <div class="col-md-4">
+              <label class="form-label">Producto <span class="text-danger">*</span></label>
+              <select id="producto" class="form-select" required>
+                <option value="">Seleccione producto...</option>
+                <option value="C-MOVIL">C-MOVIL</option>
+                <option value="C-FACIL">C-FACIL</option>
+                <option value="C-ESPCIAL">C-ESPECIAL</option>
+                <option value="C-EMPRENDEDOR">C-EMPRENDEDOR</option>
+                <option value="C-COSECHA">C-COSECHA</option>
+                <option value="C-AUTO">C-AUTO</option>
+                <option value="C-DISTRIBUIDOR">C-DISTRIBUIDOR</option>
+                <option value="CREDICONTADO">CREDICONTADO</option>
+                <option value="C-LIQUIDEZ">C-LIQUIDEZ</option>
+                <option value="C-PREFERENTE">C-PREFERENTE</option>
+              </select>
             </div>
 
-            <div class="mb-3">
-              <label>Comentario</label>
-              <textarea id="comentario" rows="4" class="form-control"></textarea>
+            <div class="col-md-4">
+              <label class="form-label">¿Quién da el Vo.Bo.?</label>
+              <input type="text" id="vistoBueno" class="form-control" placeholder="Nombre de quien autoriza" />
             </div>
 
-            <button type="submit" id="btnEnvio" class="btn btn-success">
+            <!-- Campos Condicionales (Mapeados por JS) -->
+            <div id="divReferenciaPago" class="col-md-4" style="display: none">
+              <label class="form-label">Referencia de Pago</label>
+              <input type="text" id="referenciaPago" class="form-control" placeholder="Captura la referencia" />
+            </div>
+
+            <div id="divOficinaPago" class="col-md-4" style="display: none">
+              <label class="form-label">Número de Oficina</label>
+              <input type="text" id="oficinaPago" class="form-control" placeholder="Captura el número de oficina Bansefi" />
+            </div>
+
+            <div id="divFolioPago" class="col-md-4" style="display: none">
+              <label class="form-label">Folio Pago Bansefi</label>
+              <input type="text" id="folioPago" class="form-control" placeholder="Captura el folio de pago Bansefi" />
+            </div>
+
+            <div id="divChPago" class="col-md-4" style="display: none">
+              <label class="form-label">Num. CH Bansefi</label>
+              <input type="text" id="chPago" class="form-control" placeholder="Captura el num de CH Bansefi" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 3: Documentación Adjunta -->
+        <div class="card section-card bg-white p-4 mb-4">
+          <div class="section-title d-flex align-items-center"><i class="bi bi-file-earmark-arrow-up me-2 text-primary"></i> Documentación Adjunta</div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Ficha de Depósito <span class="text-danger">*</span></label>
+              <input type="file" id="fichaDeposito" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
+              <div class="form-text">Archivos aceptados: PDF, JPG, PNG</div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Captura de SAFI <span class="text-danger">*</span></label>
+              <input type="file" id="capturaSafi" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
+              <div class="form-text">Archivos aceptados: PDF, JPG, PNG</div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Adjunta la D.O.R. <span class="text-danger">*</span></label>
+              <input type="file" id="adjuntaDor" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required />
+              <div class="form-text">Archivos aceptados: PDF, JPG, PNG</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 4: Observaciones y Envío -->
+        <div class="card section-card bg-white p-4 mb-4">
+          <div class="section-title d-flex align-items-center"><i class="bi bi-chat-left-text me-2 text-primary"></i> Observaciones Adicionales</div>
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label class="form-label">Comentarios / Notas operativas</label>
+              <textarea id="comentario" rows="3" class="form-control" placeholder="Escriba aquí cualquier observación relevante sobre este registro..." required></textarea>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end pt-3 border-top">
+            <button type="submit" id="btnEnvio" class="btn btn-corporate shadow-sm">
+              <i class="bi bi-check-circle me-1"></i>
               <span id="btnTexto">Registrar Pago</span>
               <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
             </button>
-          </form>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
 
+    <!-- Tu archivo JavaScript -->
     <script src="app.js"></script>
   </body>
 </html>
