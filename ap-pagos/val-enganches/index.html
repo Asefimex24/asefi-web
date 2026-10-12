@@ -12,7 +12,7 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Validación de enganches</title>
-    
+
     <style>
       :root {
         --corporate-blue: #0f172a;
@@ -22,7 +22,7 @@
       }
 
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         background-color: var(--corporate-bg);
         color: #334155;
       }
@@ -32,7 +32,9 @@
         color: #ffffff;
         border-radius: 12px;
         padding: 1.75rem 2rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
       }
 
       .section-card {
@@ -82,15 +84,19 @@
         margin-bottom: 0.4rem;
       }
 
-      .form-control, .form-select {
+      .form-control,
+      .form-select {
         border: 1px solid #cbd5e1;
         border-radius: 8px;
         padding: 0.6rem 0.85rem;
         font-size: 0.925rem;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition:
+          border-color 0.15s ease-in-out,
+          box-shadow 0.15s ease-in-out;
       }
 
-      .form-control:focus, .form-select:focus {
+      .form-control:focus,
+      .form-select:focus {
         border-color: var(--corporate-accent);
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
       }
@@ -132,8 +138,7 @@
   </head>
 
   <body class="py-4 py-md-5">
-    <div class="container" style="max-width: 960px;">
-      
+    <div class="container" style="max-width: 960px">
       <!-- Encabezado Principal -->
       <div class="header-card mb-4 text-center text-md-start d-md-flex align-items-center justify-content-between">
         <div>
@@ -148,7 +153,6 @@
       </div>
 
       <form id="frmEnganches">
-        
         <!-- SECCIÓN 1: Información General y Cliente -->
         <div class="section-card">
           <div class="card-header-custom">
@@ -169,70 +173,70 @@
 
               <div class="col-md-4">
                 <label class="form-label">Producto <span class="required-asterisk">*</span></label>
-              <select id="producto" class="form-select" required>
-                <option value="">Seleccione producto...</option>
-                <option value="C-MOVIL">C-MOVIL</option>
-                <option value="C-FACIL">C-FACIL</option>
-                <option value="C-ESPCIAL">C-ESPECIAL</option>
-                <option value="C-EMPRENDEDOR">C-EMPRENDEDOR</option>
-                <option value="C-COSECHA">C-COSECHA</option>
-                <option value="C-AUTO">C-AUTO</option>
-                <option value="C-DISTRIBUIDOR">C-DISTRIBUIDOR</option>
-                <option value="CREDICONTADO">CREDICONTADO</option>
-                <option value="C-LIQUIDEZ">C-LIQUIDEZ</option>
-                <option value="C-PREFERENTE">C-PREFERENTE</option>
-              </select>
+                <select id="producto" class="form-select" required>
+                  <option value="">Seleccione producto...</option>
+                  <option value="C-MOVIL">C-MOVIL</option>
+                  <option value="C-FACIL">C-FACIL</option>
+                  <option value="C-ESPCIAL">C-ESPECIAL</option>
+                  <option value="C-EMPRENDEDOR">C-EMPRENDEDOR</option>
+                  <option value="C-COSECHA">C-COSECHA</option>
+                  <option value="C-AUTO">C-AUTO</option>
+                  <option value="C-DISTRIBUIDOR">C-DISTRIBUIDOR</option>
+                  <option value="CREDICONTADO">CREDICONTADO</option>
+                  <option value="C-LIQUIDEZ">C-LIQUIDEZ</option>
+                  <option value="C-PREFERENTE">C-PREFERENTE</option>
+                </select>
               </div>
 
               <div class="col-md-4">
                 <label class="form-label">Sucursal <span class="required-asterisk">*</span></label>
-              <select id="sucursal" class="form-select" required>
-                <option value="">Seleccione la sucursal</option>
-                <option value="ACAYUCAN VERACRUZ">ACAYUCAN VERACRUZ</option>
-                <option value="BOCA DEL RIO, VERACRUZ">BOCA DEL RIO, VERACRUZ</option>
-                <option value="CANCUN QUINTANA ROO">CANCUN QUINTANA ROO</option>
-                <option value="CIUDAD DE MEXICO">CIUDAD DE MEXICO</option>
-                <option value="CUAUTLA, MORELOS">CUAUTLA, MORELOS</option>
-                <option value="ESCARCEGA CAMPECHE">ESCARCEGA CAMPECHE</option>
-                <option value="FELIPE CARRILLO PUERTO, QUINTANA ROO">FELIPE CARRILLO PUERTO, QUINTANA ROO</option>
-                <option value="GUADALAJARA, JALISCO">GUADALAJARA, JALISCO</option>
-                <option value="JUCHITAN DE ZARAGOZA, OAXACA">JUCHITAN DE ZARAGOZA, OAXACA</option>
-                <option value="MANZANILLO COLIMA">MANZANILLO COLIMA</option>
-                <option value="MERIDA, YUCATAN">MERIDA, YUCATAN</option>
-                <option value="MORELIA, MICHOACAN">MORELIA, MICHOACAN</option>
-                <option value="OAXACA, OAXACA">OAXACA, OAXACA</option>
-                <option value="OCOSINGO CHIAPAS">OCOSINGO CHIAPAS</option>
-                <option value="PALENQUE CHIAPAS">PALENQUE CHIAPAS</option>
-                <option value="PARAISO TABASCO">PARAISO TABASCO</option>
-                <option value="CIUDAD DEL CARMEN CAMPECHE">CIUDAD DEL CARMEN CAMPECHE</option>
-                <option value="PLAYA DEL CARMEN QROO">PLAYA DEL CARMEN QROO</option>
-                <option value="URUAPAN,MICHOACAN">URUAPAN, MICHOACAN</option>
-                <option value="MENDIZABAL,PUEBLA">MENDIZABAL,PUEBLA</option>
-                <option value="SAN FRANCISCO DE CAMPECHE,CAMPECHE">SAN FRANCISCO DE CAMPECHE,CAMPECHE</option>
-                <option value="TICUL,YUCATAN">TICUL,YUCATAN</option>
-                <option value="IZÚCAR DE MATAMOROS,PUEBLA">IZÚCAR DE MATAMOROS,PUEBLA</option>
-                <option value="VILLA LÁZARO CÁRDENAS,PUEBLA">VILLA LÁZARO CÁRDENAS,PUEBLA</option>
-                <option value="SAN JOSE CHILTEPEC,OAXACA">SAN JOSE CHILTEPEC, OAXACA</option>
-                <option value="SANTO DOMINGO TEHUANTEPEC,OAXACA">SANTO DOMINGO TEHUANTEPEC,OAXACA</option>
-                <option value="TAPACHULA CHIAPAS">TAPACHULA,CHIAPAS</option>
-                <option value="TUXTLA GUTIERREZ,CHIAPAS">TUXTLA GUTIERREZ,CHIAPAS</option>
-                <option value="COMITAN DE DOMINGUEZ,CHIAPAS">COMITAN DE DOMINGUEZ,CHIAPAS</option>
-                <option value="TONALA,CHIAPAS">TONALA,CHIAPAS</option>
-                <option value="OAXACA II">OAXACA II</option>
-                <option value="PUERTO ESCONDIDO,OAXACA">PUERTO ESCONDIDO,OAXACA</option>
-                <option value="VILLAHERMOSA,TABASCO">VILLAHERMOSA,TABASCO</option>
-                <option value="AYUTLA DE LOS LIBRES,GUERRERO">AYUTLA DE LOS LIBRES, GUERRERO</option>
-                <option value="TENOSIQUE,TABASCO">TENOSIQUE,TABASCO</option>
-                <option value="JOSÉ MARÍA MORELOS,Q. ROO">JOSÉ MARÍA MORELOS,Q.ROO</option>
-                <option value="CHILPANCINGO,GUERRERO">CHILPANCINGO,GUERRERO</option>
-                <option value="MARIANO ESCOBEDO,VERACRUZ">MARIANO ESCOBEDO,VERACRUZ</option>
-                <option value="MATIAS ROMERO,OAXACA">MATIAS ROMERO, OAXACA</option>
-                <option value="ZIMATLAN DE ALVAREZ,OAXACA">ZIMATLAN DE ALVAREZ,OAXACA</option>
-                <option value="HUIMANGUILLO,TABASCO">HUIMANGUILLO,TABASCO</option>
-                <option value="MACUSPANA,TABASCO">MACUSPANA, TABASCO</option>
-                <option value="NUEVA PALESTINA,CHIAPAS">NUEVA PALESTINA,CHIAPAS</option>
-                <option value="TAPILULA,CHIAPAS">TAPILULA,CHIAPAS</option>
-              </select>
+                <select id="sucursal" class="form-select" required>
+                  <option value="">Seleccione la sucursal</option>
+                  <option value="ACAYUCAN VERACRUZ">ACAYUCAN VERACRUZ</option>
+                  <option value="BOCA DEL RIO, VERACRUZ">BOCA DEL RIO, VERACRUZ</option>
+                  <option value="CANCUN QUINTANA ROO">CANCUN QUINTANA ROO</option>
+                  <option value="CIUDAD DE MEXICO">CIUDAD DE MEXICO</option>
+                  <option value="CUAUTLA, MORELOS">CUAUTLA, MORELOS</option>
+                  <option value="ESCARCEGA CAMPECHE">ESCARCEGA CAMPECHE</option>
+                  <option value="FELIPE CARRILLO PUERTO, QUINTANA ROO">FELIPE CARRILLO PUERTO, QUINTANA ROO</option>
+                  <option value="GUADALAJARA, JALISCO">GUADALAJARA, JALISCO</option>
+                  <option value="JUCHITAN DE ZARAGOZA, OAXACA">JUCHITAN DE ZARAGOZA, OAXACA</option>
+                  <option value="MANZANILLO COLIMA">MANZANILLO COLIMA</option>
+                  <option value="MERIDA, YUCATAN">MERIDA, YUCATAN</option>
+                  <option value="MORELIA, MICHOACAN">MORELIA, MICHOACAN</option>
+                  <option value="OAXACA, OAXACA">OAXACA, OAXACA</option>
+                  <option value="OCOSINGO CHIAPAS">OCOSINGO CHIAPAS</option>
+                  <option value="PALENQUE CHIAPAS">PALENQUE CHIAPAS</option>
+                  <option value="PARAISO TABASCO">PARAISO TABASCO</option>
+                  <option value="CIUDAD DEL CARMEN CAMPECHE">CIUDAD DEL CARMEN CAMPECHE</option>
+                  <option value="PLAYA DEL CARMEN QROO">PLAYA DEL CARMEN QROO</option>
+                  <option value="URUAPAN,MICHOACAN">URUAPAN, MICHOACAN</option>
+                  <option value="MENDIZABAL,PUEBLA">MENDIZABAL,PUEBLA</option>
+                  <option value="SAN FRANCISCO DE CAMPECHE,CAMPECHE">SAN FRANCISCO DE CAMPECHE,CAMPECHE</option>
+                  <option value="TICUL,YUCATAN">TICUL,YUCATAN</option>
+                  <option value="IZÚCAR DE MATAMOROS,PUEBLA">IZÚCAR DE MATAMOROS,PUEBLA</option>
+                  <option value="VILLA LÁZARO CÁRDENAS,PUEBLA">VILLA LÁZARO CÁRDENAS,PUEBLA</option>
+                  <option value="SAN JOSE CHILTEPEC,OAXACA">SAN JOSE CHILTEPEC, OAXACA</option>
+                  <option value="SANTO DOMINGO TEHUANTEPEC,OAXACA">SANTO DOMINGO TEHUANTEPEC,OAXACA</option>
+                  <option value="TAPACHULA CHIAPAS">TAPACHULA,CHIAPAS</option>
+                  <option value="TUXTLA GUTIERREZ,CHIAPAS">TUXTLA GUTIERREZ,CHIAPAS</option>
+                  <option value="COMITAN DE DOMINGUEZ,CHIAPAS">COMITAN DE DOMINGUEZ,CHIAPAS</option>
+                  <option value="TONALA,CHIAPAS">TONALA,CHIAPAS</option>
+                  <option value="OAXACA II">OAXACA II</option>
+                  <option value="PUERTO ESCONDIDO,OAXACA">PUERTO ESCONDIDO,OAXACA</option>
+                  <option value="VILLAHERMOSA,TABASCO">VILLAHERMOSA,TABASCO</option>
+                  <option value="AYUTLA DE LOS LIBRES,GUERRERO">AYUTLA DE LOS LIBRES, GUERRERO</option>
+                  <option value="TENOSIQUE,TABASCO">TENOSIQUE,TABASCO</option>
+                  <option value="JOSÉ MARÍA MORELOS,Q. ROO">JOSÉ MARÍA MORELOS,Q.ROO</option>
+                  <option value="CHILPANCINGO,GUERRERO">CHILPANCINGO,GUERRERO</option>
+                  <option value="MARIANO ESCOBEDO,VERACRUZ">MARIANO ESCOBEDO,VERACRUZ</option>
+                  <option value="MATIAS ROMERO,OAXACA">MATIAS ROMERO, OAXACA</option>
+                  <option value="ZIMATLAN DE ALVAREZ,OAXACA">ZIMATLAN DE ALVAREZ,OAXACA</option>
+                  <option value="HUIMANGUILLO,TABASCO">HUIMANGUILLO,TABASCO</option>
+                  <option value="MACUSPANA,TABASCO">MACUSPANA, TABASCO</option>
+                  <option value="NUEVA PALESTINA,CHIAPAS">NUEVA PALESTINA,CHIAPAS</option>
+                  <option value="TAPILULA,CHIAPAS">TAPILULA,CHIAPAS</option>
+                </select>
               </div>
 
               <div class="col-md-4">
@@ -271,11 +275,11 @@
               <div class="col-md-3">
                 <label class="form-label">Banco <span class="required-asterisk">*</span></label>
                 <select id="banco" class="form-select" required>
-                <option value="">Seleccione un banco...</option>
-                <option value="BANORTE">BANORTE</option>                
-                <option value="TELECOMM">TELECOMM</option>
-                <option value="OXXO">OXXO</option>
-                <option value="BANSEFI">BANSEFI</option>
+                  <option value="">Seleccione un banco...</option>
+                  <option value="BANORTE">BANORTE</option>
+                  <option value="TELECOMM">TELECOMM</option>
+                  <option value="OXXO">OXXO</option>
+                  <option value="BANSEFI">BANSEFI</option>
                 </select>
               </div>
 
@@ -335,10 +339,10 @@
 
               <div class="col-md-4">
                 <label class="form-label">Teléfono del Ejecutivo</label>
-                <input 
-                  type="text" 
-                  id="telefonoEjecutivo" 
-                  class="form-control" 
+                <input
+                  type="text"
+                  id="telefonoEjecutivo"
+                  class="form-control"
                   placeholder="Ej. 5512345678"
                   inputmode="numeric"
                   pattern="[0-9]*"
@@ -361,7 +365,6 @@
             <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
           </button>
         </div>
-
       </form>
     </div>
 
