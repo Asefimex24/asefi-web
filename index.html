@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <title>ASEFI - Menú Principal</title>
+
+    <style>
+      :root {
+        --corporate-primary: #1e293b;
+        --corporate-secondary: #0f172a;
+        --corporate-accent: #2563eb;
+        --bg-body: #f1f5f9;
+      }
+
+      body {
+        background-color: var(--bg-body);
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: #334155;
+      }
+
+      .card-main-header {
+        background: linear-gradient(135deg, var(--corporate-primary) 0%, var(--corporate-secondary) 100%);
+        border-bottom: 3px solid var(--corporate-accent);
+      }
+
+      .section-title {
+        color: var(--corporate-primary);
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+      }
+
+      .module-card {
+        display: block;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease-in-out;
+      }
+
+      .module-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--corporate-accent);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+        color: inherit;
+      }
+
+      .module-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--corporate-accent);
+        font-size: 1.4rem;
+        flex-shrink: 0;
+      }
+
+      .module-title {
+        font-weight: 600;
+        color: var(--corporate-primary);
+        font-size: 0.95rem;
+        margin-bottom: 0.15rem;
+      }
+
+      .module-desc {
+        font-size: 0.8rem;
+        color: #64748b;
+        margin-bottom: 0;
+      }
+
+      .module-arrow {
+        color: #cbd5e1;
+        font-size: 1.1rem;
+        transition: all 0.2s ease;
+      }
+
+      .module-card:hover .module-arrow {
+        color: var(--corporate-accent);
+        transform: translateX(4px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container py-4 my-3">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header card-main-header text-white p-4">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-grid-1x2-fill fs-2 me-3 text-info"></i>
+            <div>
+              <h3 class="mb-0 fw-bold">Menú Principal</h3>
+              <small class="text-light opacity-75">Portal de acceso a los módulos y formularios del sistema</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="section-title d-flex align-items-center"><i class="bi bi-cash-coin me-2 text-primary"></i> Aplicación de Pagos</div>
+      </div>
+      <div class="row g-3 mb-4">
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ap-pagos/pagos/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-receipt"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Registro de Pago</div>
+                <p class="module-desc">Registro de pago de crédito y comprobantes</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ap-pagos/val-enganches/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-check-circle"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Validación de Enganches</div>
+                <p class="module-desc">Solicitud de validación de enganche</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ap-pagos/cofinanciamiento/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-diagram-3"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Cofinanciamiento</div>
+                <p class="module-desc">Validación de enganche por cofinanciamiento</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ap-pagos/condonaciones/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-file-earmark-diff"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Condonaciones</div>
+                <p class="module-desc">Solicitud de condonación y ajustes de cartera</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ap-pagos/liquidaciones/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-file-earmark-check"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Liquidaciones</div>
+                <p class="module-desc">Registro de liquidación de crédito</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ap-pagos/com-apertura/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-cash-stack"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Comisión por Apertura</div>
+                <p class="module-desc">Registro de comisiones por apertura</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ap-pagos/gar-liquida/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-wallet2"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Garantía Líquida</div>
+                <p class="module-desc">Gestión de garantías líquidas</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="section-title d-flex align-items-center"><i class="bi bi-building me-2 text-primary"></i> Módulos Generales</div>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="guardavalores/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-safe2"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Guardavalores</div>
+                <p class="module-desc">Solicitud de documento a guardavalores</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="diseno/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-palette"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Diseño</div>
+                <p class="module-desc">Módulo de diseño</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="riesgos/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-shield-check"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">Riesgos</div>
+                <p class="module-desc">Módulo de riesgos</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="module-card" href="ti/">
+            <div class="d-flex align-items-center gap-3">
+              <div class="module-icon"><i class="bi bi-pc-display"></i></div>
+              <div class="flex-grow-1">
+                <div class="module-title">TI</div>
+                <p class="module-desc">Módulo de Tecnologías de la Información</p>
+              </div>
+              <i class="bi bi-arrow-right-circle module-arrow"></i>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
