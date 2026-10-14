@@ -327,12 +327,12 @@
             <div class="row g-3 mb-3">
               <div class="col-md-4">
                 <label class="form-label">Nombre del Ejecutivo</label>
-                <input type="text" id="nombreEjecutivo" class="form-control" placeholder="Nombre completo" />
+                <input type="text" id="nombreEjecutivo" class="form-control" placeholder="Nombre completo" required />
               </div>
 
               <div class="col-md-4">
                 <label class="form-label">Correo del Ejecutivo</label>
-                <input type="email" id="correoEjecutivo" class="form-control" placeholder="ejemplo@empresa.com" />
+                <input type="email" id="correoEjecutivo" class="form-control" placeholder="ejemplo@empresa.com" required />
               </div>
 
               <div class="col-md-4">
@@ -345,13 +345,14 @@
                   inputmode="numeric"
                   pattern="[0-9]*"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                  required
                 />
               </div>
             </div>
 
             <div>
               <label class="form-label">Comentario</label>
-              <textarea id="comentario" rows="3" class="form-control" placeholder="Notas aclaratorias u observaciones adicionales..."></textarea>
+              <textarea id="comentario" rows="3" class="form-control" placeholder="Notas aclaratorias u observaciones adicionales..." required></textarea>
             </div>
           </div>
         </div>

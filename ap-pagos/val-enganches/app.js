@@ -38,15 +38,35 @@ async function enviarFormulario() {
 
     // Procesar archivos adjuntos si existen
     const inputFicha = document.getElementById("fichaDeposito").files[0];
-    const inputCaratula = document.getElementById("caratula").files[0];
+    let fichaBase64;
+    let fichaNombre = "";
+    let fichaMime = "";
+    
+    if(inputFicha){
+      fichaBase64= await convertirArchivoABase64(inputFicha);
+      fichaNombre = inputFicha.name;
+      fichaMime = inputFicha.type;
+    }
+    
 
-    const fichaDepositoData = await convertirArchivoABase64(inputFicha);
-    const caratulaData = await convertirArchivoABase64(inputCaratula);
+
+    const inputCaratula = document.getElementById("caratula").files[0];
+    let caratulaBase64;
+    let caratulaNombre = "";
+    let caratulaMime = "";
+
+    if(inputCaratula){
+      caratulaBase64 =await convertirArchivoABase64(inputCaratula);
+      caratulaNombre = inputCaratula.name;
+      caratulaMime = inputCaratula.type;
+    }
+    
 
     // Mapeo de datos con los IDs exactos del nuevo formulario
     const datos = {
+      tipoOperacion: "ENGANCHES",
       fechaHora: document.getElementById("fechaHora").value,
-      cliente: document.getElementById("cliente").value,
+      nombreCliente: document.getElementById("nombreCliente").value,
       producto: document.getElementById("producto").value,
       sucursal: document.getElementById("sucursal").value,
       distribuidor: document.getElementById("distribuidor").value,
@@ -54,17 +74,21 @@ async function enviarFormulario() {
       importe: document.getElementById("importe").value,
       banco: document.getElementById("banco").value,
       tipoDeposito: document.getElementById("tipoDeposito").value,
-      fichaDeposito: fichaDepositoData,
-      caratula: caratulaData,
       nombreEjecutivo: document.getElementById("nombreEjecutivo").value,
-      correoejecutivo: document.getElementById("correoejecutivo").value,
+      correoEjecutivo: document.getElementById("correoEjecutivo").value,
       telefonoEjecutivo: document.getElementById("telefonoEjecutivo").value,
       comentario: document.getElementById("comentario").value,
+      fichaBase64: fichaBase64,
+      fichaNombre: fichaNombre,
+      fichaMime: fichaMime,
+      caratulaBase64: caratulaBase64,
+      caratulaNombre: caratulaNombre,
+      caratulaMime: caratulaMime,
     };
 
     console.log("Datos a enviar:", datos);
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbw-1S_Tit2y1uvzBT40MIgrt5Ych4KsT42bfsW5gGoEhX3QFtJY7vt-3VdH_laOKo-g-w/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbyLhMWC5GFgUynv25YLW6tuzI_cLd1TmGiR3HICUDvCAhXOLJWjlSKSnPatKRMu8CSw/exec";
 
     const response = await fetch(API_URL, {
       method: "POST",
