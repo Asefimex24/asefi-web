@@ -72,7 +72,6 @@ async function enviarFormulario() {
       caratulaMime: caratulaMime,
     };
 
-    console.log("Datos a enviar:", datos);
 
     const API_URL = "https://script.google.com/macros/s/AKfycbzRF6dyP_m4xhYFuYqZ_-zdkd2SqW4-HJw-GRl9C0BIUcqm0z9Z9fmGcKB1xSBcs1wD/exec";
 
