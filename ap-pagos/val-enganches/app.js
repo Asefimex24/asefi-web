@@ -4,24 +4,12 @@ document.getElementById("frmEnganches").addEventListener("submit", async (e) => 
 });
 
 // Función auxiliar para convertir archivos (File) a Base64
-function convertirArchivoABase64(file) {
+function convertirBase64(file) {
   return new Promise((resolve, reject) => {
-    if (!file) {
-      resolve(null);
-      return;
-    }
     const reader = new FileReader();
-    reader.onload = () => {
-      // Extrae la cadena base64 removiendo el encabezado data:*/*;base64,
-      const base64String = reader.result.split(",")[1];
-      resolve({
-        nombre: file.name,
-        tipo: file.type,
-        base64: base64String,
-      });
-    };
-    reader.onerror = (error) => reject(error);
     reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
   });
 }
 
@@ -43,20 +31,18 @@ async function enviarFormulario() {
     let fichaMime = "";
     
     if(inputFicha){
-      fichaBase64= await convertirArchivoABase64(inputFicha);
+      fichaBase64= await convertirBase64(inputFicha);
       fichaNombre = inputFicha.name;
       fichaMime = inputFicha.type;
     }
     
-
-
     const inputCaratula = document.getElementById("caratula").files[0];
     let caratulaBase64;
     let caratulaNombre = "";
     let caratulaMime = "";
 
     if(inputCaratula){
-      caratulaBase64 =await convertirArchivoABase64(inputCaratula);
+      caratulaBase64 =await convertirBase64(inputCaratula);
       caratulaNombre = inputCaratula.name;
       caratulaMime = inputCaratula.type;
     }
@@ -88,7 +74,7 @@ async function enviarFormulario() {
 
     console.log("Datos a enviar:", datos);
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbyLhMWC5GFgUynv25YLW6tuzI_cLd1TmGiR3HICUDvCAhXOLJWjlSKSnPatKRMu8CSw/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzRF6dyP_m4xhYFuYqZ_-zdkd2SqW4-HJw-GRl9C0BIUcqm0z9Z9fmGcKB1xSBcs1wD/exec";
 
     const response = await fetch(API_URL, {
       method: "POST",
