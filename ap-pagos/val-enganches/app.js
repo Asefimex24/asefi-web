@@ -89,14 +89,13 @@ async function enviarFormulario() {
     if (response.ok && resultado.success) {
       Swal.fire({
         position: "top-center",
-        icon: "success",
-        title: "Depósito Registrado",
-        text: "La información y los comprobantes se guardaron correctamente.",
+         icon: "success",
+        title: "Solicitud Registrada",
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1500,
       });
 
-      document.getElementById("frmDepositos").reset();
+      document.getElementById("frmEnganches").reset();
       establecerFechaActual();
     } else {
       Swal.fire({
