@@ -4,24 +4,12 @@ document.getElementById("frmEnganches").addEventListener("submit", async (e) => 
 });
 
 // Función auxiliar para convertir archivos (File) a Base64
-function convertirArchivoABase64(file) {
+function convertirBase64(file) {
   return new Promise((resolve, reject) => {
-    if (!file) {
-      resolve(null);
-      return;
-    }
     const reader = new FileReader();
-    reader.onload = () => {
-      // Extrae la cadena base64 removiendo el encabezado data:*/*;base64,
-      const base64String = reader.result.split(",")[1];
-      resolve({
-        nombre: file.name,
-        tipo: file.type,
-        base64: base64String,
-      });
-    };
-    reader.onerror = (error) => reject(error);
     reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
   });
 }
 
@@ -33,20 +21,38 @@ async function enviarFormulario() {
 
   try {
     btn.disabled = true;
-    textoBoton.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Procesando...';
+    textoBoton.innerHTML = 'Procesando...';
     spinner.classList.remove("d-none");
 
     // Procesar archivos adjuntos si existen
     const inputFicha = document.getElementById("fichaDeposito").files[0];
+    let fichaBase64;
+    let fichaNombre = "";
+    let fichaMime = "";
+    
+    if(inputFicha){
+      fichaBase64= await convertirBase64(inputFicha);
+      fichaNombre = inputFicha.name;
+      fichaMime = inputFicha.type;
+    }
+    
     const inputCaratula = document.getElementById("caratula").files[0];
+    let caratulaBase64;
+    let caratulaNombre = "";
+    let caratulaMime = "";
 
-    const fichaDepositoData = await convertirArchivoABase64(inputFicha);
-    const caratulaData = await convertirArchivoABase64(inputCaratula);
+    if(inputCaratula){
+      caratulaBase64 =await convertirBase64(inputCaratula);
+      caratulaNombre = inputCaratula.name;
+      caratulaMime = inputCaratula.type;
+    }
+    
 
     // Mapeo de datos con los IDs exactos del nuevo formulario
     const datos = {
+      tipoOperacion: "COFINANCIAMIENTO",
       fechaHora: document.getElementById("fechaHora").value,
-      cliente: document.getElementById("cliente").value,
+      nombreCliente: document.getElementById("nombreCliente").value,
       producto: document.getElementById("producto").value,
       sucursal: document.getElementById("sucursal").value,
       distribuidor: document.getElementById("distribuidor").value,
@@ -54,17 +60,21 @@ async function enviarFormulario() {
       importe: document.getElementById("importe").value,
       banco: document.getElementById("banco").value,
       tipoDeposito: document.getElementById("tipoDeposito").value,
-      fichaDeposito: fichaDepositoData,
-      caratula: caratulaData,
       nombreEjecutivo: document.getElementById("nombreEjecutivo").value,
-      correoejecutivo: document.getElementById("correoejecutivo").value,
+      correoEjecutivo: document.getElementById("correoEjecutivo").value,
       telefonoEjecutivo: document.getElementById("telefonoEjecutivo").value,
       comentario: document.getElementById("comentario").value,
+      fichaBase64: fichaBase64,
+      fichaNombre: fichaNombre,
+      fichaMime: fichaMime,
+      caratulaBase64: caratulaBase64,
+      caratulaNombre: caratulaNombre,
+      caratulaMime: caratulaMime,
     };
 
     console.log("Datos a enviar:", datos);
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbw-1S_Tit2y1uvzBT40MIgrt5Ych4KsT42bfsW5gGoEhX3QFtJY7vt-3VdH_laOKo-g-w/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzRF6dyP_m4xhYFuYqZ_-zdkd2SqW4-HJw-GRl9C0BIUcqm0z9Z9fmGcKB1xSBcs1wD/exec";
 
     const response = await fetch(API_URL, {
       method: "POST",
@@ -80,13 +90,12 @@ async function enviarFormulario() {
       Swal.fire({
         position: "top-center",
         icon: "success",
-        title: "Depósito Registrado",
-        text: "La información y los comprobantes se guardaron correctamente.",
+        title: "Solicitud Registrada",
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1500,
       });
 
-      document.getElementById("frmDepositos").reset();
+      document.getElementById("frmEnganches").reset();
       establecerFechaActual();
     } else {
       Swal.fire({
