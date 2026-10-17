@@ -101,28 +101,27 @@ try {
   }
 }
 
-// Reemplaza esta constante con la URL de tu API de Apps Script
-const URL_API_CONSULTA_CREDITO = "TU_URL_DE_APPS_SCRIPT_GET_AQUI";
+
+
+// url scrip para obtener info de crédito
+const URL_API_GET = "https://script.google.com/macros/s/AKfycbzO1FxMPv3hLe91MTUHBloyyBkFad4Ea5QTB9SMK5bvvlM2FkGtdryJXYrF0Cs9jHQvzA/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const inputCredito = document.getElementById("credito");
-  
+
   if (inputCredito) {
     inputCredito.addEventListener("keydown", async function (e) {
-      // Validar si se presionó la tecla TAB (key === "Tab" o keyCode 9) o Enter (key === "Enter")
       if (e.key === "Tab" || e.key === "Enter") {
         const tipoSolicitud = document.getElementById("tipoSolicitud").value;
         const numCredito = this.value.trim();
 
-        // Solo ejecutar si es una Solventación y si hay un número de crédito escrito
         if (tipoSolicitud === "Solventación" && numCredito !== "") {
-          // Previene el cambio de foco inmediato para dar tiempo a realizar la consulta
-          e.preventDefault(); 
-          
+          e.preventDefault(); // Evita avanzar de campo hasta completar la búsqueda
           await consultarCreditoAPI(numCredito);
           
-          // Mover manualmente el foco al siguiente campo disponible (Comentario o Nombre Factura)
-          document.getElementById("comentario").focus();
+          // Enfocar en el campo de comentario al finalizar
+          const campoComentario = document.getElementById("comentario");
+          if (campoComentario) campoComentario.focus();
         }
       }
     });
@@ -130,14 +129,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Realiza la consulta GET a la API de Apps Script para obtener los datos del crédito
- * @param {string} credito 
+ * Consulta la API GET en Apps Script y asigna los valores devueltos
  */
 async function consultarCreditoAPI(credito) {
-  // Mostrar feedback visual de carga con SweetAlert2
   Swal.fire({
     title: "Consultando crédito...",
-    text: "Por favor espere mientras recuperamos la información.",
+    text: "Buscando información en la base de datos...",
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
@@ -145,47 +142,50 @@ async function consultarCreditoAPI(credito) {
   });
 
   try {
-    // Petición GET enviando el número de crédito como parámetro URL
-    const url = `${URL_API_CONSULTA_CREDITO}?action=buscarCredito&credito=${encodeURIComponent(credito)}`;
+    const url = `${URL_API_GET}?credito=${encodeURIComponent(credito)}`;
     const respuesta = await fetch(url);
     const resultado = await respuesta.json();
 
     if (resultado.status === "success" && resultado.data) {
-      const data = resultado.data;
+      const d = resultado.data;
 
-      // Autocompletar los campos con los datos devueltos por la API
-      document.getElementById("producto").value = data.producto || "";
-      document.getElementById("nombreCliente").value = data.nombreCliente || "";
-      document.getElementById("sucursal").value = data.sucursal || "";
-      document.getElementById("distribuidor").value = data.distribuidor || "";
-      document.getElementById("xpAzul").value = data.xpAzul || "";
-      document.getElementById("nombreFactura").value = data.nombreFactura || "";
-      document.getElementById("folioFactura").value = data.folioFactura || "";
+      // Autocompletar mapeando los nombres devueltos por la hoja
+      if (d.PRODUCTO) document.getElementById("producto").value = d.PRODUCTO;
+      if (d.CLIENTE) document.getElementById("nombreCliente").value = d.CLIENTE;
+      if (d.SUCURSAL) document.getElementById("sucursal").value = d.SUCURSAL;
+      if (d.DISTRIBUIDOR) document.getElementById("distribuidor").value = d.DISTRIBUIDOR;
+      if (d.XP_AZUL) document.getElementById("xpAzul").value = d.XP_AZUL;
+      if (d.NOMBRE_FACTURA) document.getElementById("nombreFactura").value = d.NOMBRE_FACTURA;
+      if (d.FOLIO_FACTURA) document.getElementById("folioFactura").value = d.FOLIO_FACTURA;
+
+     
 
       Swal.fire({
         icon: "success",
         title: "¡Crédito localizado!",
-        text: "Los datos del crédito se han cargado automáticamente.",
+        text: "Los datos se han autocompletado correctamente.",
         timer: 1800,
         showConfirmButton: false
       });
+
+
     } else {
-      throw new Error(resultado.message || "No se encontraron registros para este número de crédito.");
+      throw new Error(resultado.message || "No se encontró información para el crédito ingresado.");
     }
+
   } catch (error) {
     console.error("Error al consultar el crédito:", error);
-    
-    // Limpiar los campos si hubo un fallo en la búsqueda
-    const camposLimpiar = ["producto", "nombreCliente", "sucursal", "distribuidor", "xpAzul", "nombreFactura", "folioFactura"];
-    camposLimpiar.forEach(id => {
-      const elem = document.getElementById(id);
-      if (elem) elem.value = "";
+
+    // Limpiar campos en caso de no encontrar datos
+    ["producto", "nombreCliente", "sucursal", "distribuidor", "xpAzul", "nombreFactura", "folioFactura"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
     });
 
     Swal.fire({
       icon: "warning",
       title: "Sin resultados",
-      text: error.message || "No se pudo consultar la información del crédito.",
+      text: error.message || "No se pudo recuperar la información del crédito.",
       confirmButtonColor: "#2563eb"
     });
   }
