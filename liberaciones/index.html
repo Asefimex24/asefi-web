@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Solicitud de Liberación de Unidad</title>
+
+    <style>
+      :root {
+        --corporate-blue: #0f172a;
+        --corporate-accent: #2563eb;
+        --corporate-bg: #f8fafc;
+        --card-border: #e2e8f0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--corporate-bg);
+        color: #334155;
+      }
+
+      .header-card {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 1.75rem 2rem;
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .section-card {
+        background: #ffffff;
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+        transition: all 0.2s ease;
+      }
+
+      .section-card:hover {
+        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+      }
+
+      .section-card .card-header-custom {
+        background-color: #ffffff;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 1rem 1.5rem;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .section-card .card-header-custom h5 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--corporate-blue);
+      }
+
+      .section-card .card-header-custom i {
+        color: var(--corporate-accent);
+        font-size: 1.1rem;
+      }
+
+      .section-card .card-body {
+        padding: 1.5rem;
+      }
+
+      .form-label {
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: #475569;
+        margin-bottom: 0.4rem;
+      }
+
+      .form-control,
+      .form-select {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 0.6rem 0.85rem;
+        font-size: 0.925rem;
+        transition:
+          border-color 0.15s ease-in-out,
+          box-shadow 0.15s ease-in-out;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--corporate-accent);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+
+      .form-control[readonly] {
+        background-color: #f1f5f9;
+        color: #64748b;
+      }
+
+      .required-asterisk {
+        color: #ef4444;
+        margin-left: 2px;
+      }
+
+      .btn-corporate {
+        background-color: var(--corporate-accent);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        transition: all 0.2s ease;
+      }
+
+      .btn-corporate:hover:not(:disabled) {
+        background-color: #1d4ed8;
+        color: #ffffff;
+        box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+        transform: translateY(-1px);
+      }
+
+      #btnEnvio:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+
+  <body class="py-4 py-md-5">
+    <div class="container" style="max-width: 960px">
+      <!-- Encabezado Principal -->
+      <div class="header-card mb-4 text-center text-md-start d-md-flex align-items-center justify-content-between">
+        <div>
+          <h3 class="mb-1 fw-bold"><i class="fa-solid fa-truck-ramp-box me-2"></i>Solicitud de Liberación de Unidad</h3>
+          <p class="mb-0 text-white-50 small">Mesa de Control - Registro y trámite para liberación de unidades</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+          <a href="../index.html" class="btn btn-outline-light btn-sm"> <i class="fa-solid fa-arrow-left me-2"></i>Regresar al menú </a>
+        </div>
+      </div>
+
+      <form id="frmLiberacionUnidad">
+        <!-- SECCIÓN 1: Datos Generales y del Ejecutivo -->
+        <div class="section-card">
+          <div class="card-header-custom">
+            <i class="fa-solid fa-user-tie"></i>
+            <h5>1. Datos Generales y del Ejecutivo</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label" for="fechaHora">Fecha y Hora <span class="required-asterisk">*</span></label>
+                <input type="text" id="fechaHora" name="fechaHora" class="form-control" required readonly />
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label" for="nombreEjecutivo">Nombre del Ejecutivo <span class="required-asterisk">*</span></label>
+                <input type="text" id="nombreEjecutivo" name="nombreEjecutivo" class="form-control" placeholder="Nombre completo del ejecutivo" required />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="telefonoEjecutivo">Teléfono del Ejecutivo <span class="required-asterisk">*</span></label>
+                <input
+                  type="text"
+                  id="telefonoEjecutivo"
+                  name="telefonoEjecutivo"
+                  class="form-control"
+                  placeholder="Ej. 5512345678"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="emailEjecutivo">Correo Electrónico del Ejecutivo <span class="required-asterisk">*</span></label>
+                <input type="email" id="emailEjecutivo" name="emailEjecutivo" class="form-control" placeholder="ejemplo@empresa.com" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 2: Información del Crédito y Cliente -->
+        <div class="section-card">
+          <div class="card-header-custom">
+            <i class="fa-solid fa-file-contract"></i>
+            <h5>2. Información del Crédito y Cliente</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label" for="tipoSolicitud">Tipo de Solicitud <span class="required-asterisk">*</span></label>
+                <select id="tipoSolicitud" name="tipoSolicitud" class="form-select" required>
+                  <option value="">Seleccione tipo...</option>
+                  <option value="Nueva Solicitud">Nueva Solicitud</option>
+                  <option value="Solventación">Solventar Solicitud</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="credito">Número de Crédito <span class="required-asterisk">*</span></label>
+                <input type="text" id="credito" name="credito" class="form-control" placeholder="Ej. CR-12345" required />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="producto">Producto <span class="required-asterisk">*</span></label>
+                <select id="producto" name="producto" class="form-select" required>
+                  <option value="">Seleccione producto...</option>
+                  <option value="C-MOVIL">C-MOVIL</option>
+                  <option value="C-FACIL">C-FACIL</option>
+                  <option value="C-ESPECIAL">C-ESPECIAL</option>
+                  <option value="C-EMPRENDEDOR">C-EMPRENDEDOR</option>
+                  <option value="C-COSECHA">C-COSECHA</option>
+                  <option value="C-AUTO">C-AUTO</option>
+                  <option value="C-DISTRIBUIDOR">C-DISTRIBUIDOR</option>
+                  <option value="CREDICONTADO">CREDICONTADO</option>
+                  <option value="C-LIQUIDEZ">C-LIQUIDEZ</option>
+                  <option value="C-PREFERENTE">C-PREFERENTE</option>
+                </select>
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label" for="nombreCliente">Nombre del Cliente <span class="required-asterisk">*</span></label>
+                <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" placeholder="Nombre completo del cliente" required />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="sucursal">Sucursal <span class="required-asterisk">*</span></label>
+                <select id="sucursal" name="sucursal" class="form-select" required>
+                  <option value="">Seleccione la sucursal...</option>
+                  <option value="ACAYUCAN VERACRUZ">ACAYUCAN VERACRUZ</option>
+                  <option value="BOCA DEL RIO, VERACRUZ">BOCA DEL RIO, VERACRUZ</option>
+                  <option value="CANCUN QUINTANA ROO">CANCUN QUINTANA ROO</option>
+                  <option value="CIUDAD DE MEXICO">CIUDAD DE MEXICO</option>
+                  <option value="CUAUTLA, MORELOS">CUAUTLA, MORELOS</option>
+                  <option value="ESCARCEGA CAMPECHE">ESCARCEGA CAMPECHE</option>
+                  <option value="FELIPE CARRILLO PUERTO, QUINTANA ROO">FELIPE CARRILLO PUERTO, QUINTANA ROO</option>
+                  <option value="GUADALAJARA, JALISCO">GUADALAJARA, JALISCO</option>
+                  <option value="JUCHITAN DE ZARAGOZA, OAXACA">JUCHITAN DE ZARAGOZA, OAXACA</option>
+                  <option value="MANZANILLO COLIMA">MANZANILLO COLIMA</option>
+                  <option value="MERIDA, YUCATAN">MERIDA, YUCATAN</option>
+                  <option value="MORELIA, MICHOACAN">MORELIA, MICHOACAN</option>
+                  <option value="OAXACA, OAXACA">OAXACA, OAXACA</option>
+                  <option value="OCOSINGO CHIAPAS">OCOSINGO CHIAPAS</option>
+                  <option value="PALENQUE CHIAPAS">PALENQUE CHIAPAS</option>
+                  <option value="PARAISO TABASCO">PARAISO TABASCO</option>
+                  <option value="CIUDAD DEL CARMEN CAMPECHE">CIUDAD DEL CARMEN CAMPECHE</option>
+                  <option value="PLAYA DEL CARMEN QROO">PLAYA DEL CARMEN QROO</option>
+                  <option value="URUAPAN,MICHOACAN">URUAPAN, MICHOACAN</option>
+                  <option value="MENDIZABAL,PUEBLA">MENDIZABAL,PUEBLA</option>
+                  <option value="SAN FRANCISCO DE CAMPECHE,CAMPECHE">SAN FRANCISCO DE CAMPECHE,CAMPECHE</option>
+                  <option value="TICUL,YUCATAN">TICUL,YUCATAN</option>
+                  <option value="IZÚCAR DE MATAMOROS,PUEBLA">IZÚCAR DE MATAMOROS,PUEBLA</option>
+                  <option value="VILLA LÁZARO CÁRDENAS,PUEBLA">VILLA LÁZARO CÁRDENAS,PUEBLA</option>
+                  <option value="SAN JOSE CHILTEPEC,OAXACA">SAN JOSE CHILTEPEC, OAXACA</option>
+                  <option value="SANTO DOMINGO TEHUANTEPEC,OAXACA">SANTO DOMINGO TEHUANTEPEC,OAXACA</option>
+                  <option value="TAPACHULA CHIAPAS">TAPACHULA,CHIAPAS</option>
+                  <option value="TUXTLA GUTIERREZ,CHIAPAS">TUXTLA GUTIERREZ,CHIAPAS</option>
+                  <option value="COMITAN DE DOMINGUEZ,CHIAPAS">COMITAN DE DOMINGUEZ,CHIAPAS</option>
+                  <option value="TONALA,CHIAPAS">TONALA,CHIAPAS</option>
+                  <option value="OAXACA II">OAXACA II</option>
+                  <option value="PUERTO ESCONDIDO,OAXACA">PUERTO ESCONDIDO,OAXACA</option>
+                  <option value="VILLAHERMOSA,TABASCO">VILLAHERMOSA,TABASCO</option>
+                  <option value="AYUTLA DE LOS LIBRES,GUERRERO">AYUTLA DE LOS LIBRES, GUERRERO</option>
+                  <option value="TENOSIQUE,TABASCO">TENOSIQUE,TABASCO</option>
+                  <option value="JOSÉ MARÍA MORELOS,Q. ROO">JOSÉ MARÍA MORELOS,Q.ROO</option>
+                  <option value="CHILPANCINGO,GUERRERO">CHILPANCINGO,GUERRERO</option>
+                  <option value="MARIANO ESCOBEDO,VERACRUZ">MARIANO ESCOBEDO,VERACRUZ</option>
+                  <option value="MATIAS ROMERO,OAXACA">MATIAS ROMERO, OAXACA</option>
+                  <option value="ZIMATLAN DE ALVAREZ,OAXACA">ZIMATLAN DE ALVAREZ,OAXACA</option>
+                  <option value="HUIMANGUILLO,TABASCO">HUIMANGUILLO,TABASCO</option>
+                  <option value="MACUSPANA,TABASCO">MACUSPANA, TABASCO</option>
+                  <option value="NUEVA PALESTINA,CHIAPAS">NUEVA PALESTINA,CHIAPAS</option>
+                  <option value="TAPILULA,CHIAPAS">TAPILULA,CHIAPAS</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="distribuidor">Distribuidor <span class="required-asterisk">*</span></label>
+                <select id="distribuidor" name="distribuidor" class="form-select" required>
+                  <option value="">Seleccione distribuidor...</option>
+                  <option value="">Selecciona el Distribuidor...</option>
+                  <option value="ASEFIMEX">ASEFIMEX</option>
+                  <option value="BAJAJ COLIMA">BAJAJ COLIMA</option>
+                  <option value="BAJAJ ORIENTE">BAJAJ ORIENTE</option>
+                  <option value="COMERCIALIZADORA GOMEZ IBARRA DE LA LAGUNA S.A. DE C.V.">COMERCIALIZADORA GOMEZ IBARRA DE LA LAGUNA S.A. DE C.V.</option>
+                  <option value="CORPORATIVO">CORPORATIVO</option>
+                  <option value="DAVID COUTIÑO SANCHEZ">DAVID COUTIÑO SANCHEZ</option>
+                  <option value="EDDY FRANCISCO PENAGOS ZAMORA">EDDY FRANCISCO PENAGOS ZAMORA</option>
+                  <option value="EURO MOTOS">EURO MOTOS</option>
+                  <option value="GERARDO VICENTE CASTAÑEDA VILLICAÑA">GERARDO VICENTE CASTAÑEDA VILLICAÑA</option>
+                  <option value="GUADALUPE COUTIÑO LARA">GUADALUPE COUTIÑO LARA</option>
+                  <option value="GUILLERMO ALDANA AGUILAR">GUILLERMO ALDANA AGUILAR</option>
+                  <option value="INTEGRA MOVIL">INTEGRA MOVIL</option>
+                  <option value="IRENO RAMOS GARCIA">IRENO RAMOS GARCIA</option>
+                  <option value="JESUS FLORES ALEJO">JESUS FLORES ALEJO</option>
+                  <option value="LUIS ENRIQUE RUIZ COUTIÑO">LUIS ENRIQUE RUIZ COUTIÑO</option>
+                  <option value="MANUEL ENRIQUE MARTINEZ AGUILAR">MANUEL ENRIQUE MARTINEZ AGUILAR</option>
+                  <option value="MF BIKERS S.A. DE C.V.">MF BIKERS S.A. DE C.V.</option>
+                  <option value="MOTO GALERIA PENINSULA">MOTO GALERIA PENINSULA</option>
+                  <option value="MOTO GALERIA S.A. DE C.V.">MOTO GALERIA S.A. DE C.V.</option>
+                  <option value="MOTO RAIZER (ALEJANDRO GARCIA VIDAL)">MOTO RAIZER (ALEJANDRO GARCIA VIDAL)</option>
+                  <option value="SHINERAY (MOTO GALERIA)">SHINERAY (MOTO GALERIA)</option>
+                  <option value="TRANSPEOPLE">TRANSPEOPLE</option>
+                  <option value="TUMOTO DE BOCA DEL RIO">TUMOTO DE BOCA DEL RIO</option>
+                  <option value="VERACRUZANA DE MOTOS (HONDA)">VERACRUZANA DE MOTOS (HONDA)</option>
+                  <option value="VICTOR ANDRES TREJO TAPIA">VICTOR ANDRES TREJO TAPIA</option>
+                  <option value="YAMAHA">YAMAHA</option>
+                  <option value="ZEFERINO MARTINEZ GARCIA">ZEFERINO MARTINEZ GARCIA</option>
+                </select>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="xpAzul">XP Azul <span class="required-asterisk">*</span></label>
+                <input type="text" id="xpAzul" name="xpAzul" class="form-control" placeholder="Ingrese número / clave de XP Azul" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 3: Datos de la Factura y Observaciones -->
+        <div class="section-card">
+          <div class="card-header-custom">
+            <i class="fa-solid fa-receipt"></i>
+            <h5>3. Datos de la Factura y Comentarios</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="nombreFactura">Nombre en Factura <span class="required-asterisk">*</span></label>
+                <input type="text" id="nombreFactura" name="nombreFactura" class="form-control" placeholder="Razón social o nombre a facturar" required />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="folioFactura">Folio de Factura <span class="required-asterisk">*</span></label>
+                <input type="text" id="folioFactura" name="folioFactura" class="form-control" placeholder="Folio o número de factura" required />
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label" for="comentario">Comentarios u Observaciones Adicionales</label>
+                <textarea id="comentario" name="comentario" rows="3" class="form-control" placeholder="Escriba aquí notas aclaratorias u especificaciones complementarias..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de Envío -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+          <button type="submit" id="btnEnvio" class="btn btn-corporate px-5 py-2 fs-6">
+            <span id="btnTexto">Enviar Solicitud</span>
+            <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
