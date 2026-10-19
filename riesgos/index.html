@@ -269,7 +269,7 @@
                   <option value="">Seleccione el tipo de reporte...</option>
                   <option value="Incidencia de Seguridad">Incidencia de Seguridad</option>
                   <option value="Falsificación de Documentos">Falsificación de Documentos</option>
-                  <option value="Otros">Otros</option>
+                  <option value="Otros">Reportar otra incidencia de riesgo</option>
                 </select>
               </div>
 
@@ -278,7 +278,17 @@
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label class="form-label" for="tipoIncidencia">Tipo de Incidencia <span class="required-asterisk">*</span></label>
-                    <input type="text" id="tipoIncidencia" name="tipoIncidencia" class="form-control" placeholder="Ej. Acceso no autorizado, malware..." />
+                    <select id="tipoIncidencia" name="tipoIncidencia" class="form-select">
+                      <option value="">Seleccione el tipo de incidencia...</option>
+                      <option value="Robo">Robo</option>
+                      <option value="Asalto">Asalto</option>
+                      <option value="Extorsion">Extorsion</option>
+                      <option value="Amenaza">Amenaza</option>
+                      <option value="Zona Insegura">Zona Insegura</option>
+                      <option value="Retencion por Autoridad">Retencion por Autoridad</option>
+                      <option value="Bloqueo">Bloqueo</option>
+                      <option value="Manifestacion">Manifestacion</option>
+                    </select>
                   </div>
 
                   <div class="col-md-3">
@@ -312,7 +322,14 @@
 
                   <div class="col-md-4">
                     <label class="form-label" for="plataforma">Plataforma <span class="required-asterisk">*</span></label>
-                    <input type="text" id="plataforma" name="plataforma" class="form-control" placeholder="Ej. Sistema Core, App Movil..." />
+                    <select id="plataforma" name="plataforma" class="form-select" required>
+                      <option value="">Seleccione la plataforma...</option>
+                      <option value="Safi">Safi</option>
+                      <option value="Drem">Drem</option>
+                      <option value="XP-Azul">XP-Azul</option>
+                      <option value="Asefi-Plus">Asefi-Plus</option>
+                      <option value="Otro">Otro</option>
+                    </select>
                   </div>
 
                   <div class="col-md-4">
@@ -322,12 +339,26 @@
 
                   <div class="col-md-6">
                     <label class="form-label" for="documentoReportado">Documento Reportado <span class="required-asterisk">*</span></label>
-                    <input type="text" id="documentoReportado" name="documentoReportado" class="form-control" placeholder="Ej. INE, Comprobante de domicilio..." />
+                    <select id="documentoReportado" name="documentoReportado" class="form-select" required>
+                      <option value="">Seleccione el tipo de reporte...</option>
+                      <option value="Ine">Identificación Oficial</option>
+                      <option value="Curp">Curp</option>
+                      <option value="Comprobante de domicilio">Comprobante de domicilio</option>
+                      <option value="Comprobante de Ingresos">Comprobante de Ingresos</option>
+                      <option value="Factura">Factura</option>
+                      <option value="Otro">Otro</option>
+                    </select>                
                   </div>
 
                   <div class="col-md-6">
                     <label class="form-label" for="deteccion">Detección <span class="required-asterisk">*</span></label>
-                    <input type="text" id="deteccion" name="deteccion" class="form-control" placeholder="¿Cómo se detectó la falsificación?" />
+                    <select id="deteccion" name="deteccion" class="form-select" required>
+                      <option value="">Seleccione el tipo de reporte...</option>
+                      <option value="Durante Visita">Durante Visita</option>
+                      <option value="Validacion Documental">Validación Documental</option>
+                      <option value="Llamada de Validacion">Llamada de Validación</option>
+                      <option value="Otro">Otro</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -337,7 +368,18 @@
                 <div class="row g-3">
                   <div class="col-md-12">
                     <label class="form-label" for="tipoRiesgo">Tipo de Riesgo <span class="required-asterisk">*</span></label>
-                    <input type="text" id="tipoRiesgo" name="tipoRiesgo" class="form-control" placeholder="Especifique el tipo de riesgo" />
+                    
+                    <select id="tipoRiesgo" name="tipoRiesgo" class="form-select" required>
+                      <option value="">Seleccione el tipo de riesgo...</option>
+                      <option value="Operativo">Operativo</option>
+                      <option value="Comercial">Comercial</option>
+                      <option value="Legal">Legal</option>
+                      <option value="Reputacional">Reputacional</option>
+                      <option value="Fraude">Fraude</option>
+                      <option value="Seguridad">Seguridad</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+
                   </div>
                 </div>
               </div>
