@@ -110,19 +110,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputCredito = document.getElementById("credito");
 
   if (inputCredito) {
-    inputCredito.addEventListener("keydown", async function (e) {
-      if (e.key === "Tab" || e.key === "Enter") {
-        const tipoSolicitud = document.getElementById("tipoSolicitud").value;
-        const numCredito = this.value.trim();
+    // Variable para evitar ejecuciones duplicadas si se presiona Enter y luego se dispara 'blur'
+    let ejecutandoConsulta = false;
 
-        if (tipoSolicitud === "Solventación" && numCredito !== "") {
-          e.preventDefault(); // Evita avanzar de campo hasta completar la búsqueda
+    async function procesarConsulta() {
+      if (ejecutandoConsulta) return;
+
+      const tipoSolicitud = document.getElementById("tipoSolicitud")?.value;
+      const numCredito = inputCredito.value.trim();
+
+      if (tipoSolicitud === "Solventación" && numCredito !== "") {
+        ejecutandoConsulta = true;
+        try {
           await consultarCreditoAPI(numCredito);
-          
-          // Enfocar en el campo de comentario al finalizar
+
+          // Mover foco al campo comentario
           const campoComentario = document.getElementById("comentario");
           if (campoComentario) campoComentario.focus();
+        } finally {
+          ejecutandoConsulta = false;
         }
+      }
+    }
+
+    // 1. Evento 'blur': Se dispara cuando el campo pierde el foco (ideal para móviles y Tab en PC)
+    inputCredito.addEventListener("blur", async () => {
+      await procesarConsulta();
+    });
+
+    // 2. Evento 'keydown': Captura el botón "Enter" o "Siguiente" del teclado virtual/físico
+    inputCredito.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault(); // Evita que el formulario se envíe si está dentro de un <form>
+        inputCredito.blur(); // Remueve el foco, lo que disparará la pérdida de foco de forma limpia
       }
     });
   }
