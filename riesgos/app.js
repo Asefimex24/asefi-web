@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // CONFIGURACIÓN DE URL DE GOOGLE APPS SCRIPT
     // ==========================================
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIakcaKWyvP0H0qfOc8YJouEwWAZdotprlyttoB34gB9gs_VkVV28u6aSkhE9f2MOE/exec"; // Reemplaza con la URL de tu Google Script
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4Xegw6yO3NKG_ZN8igapHlG1Wurj6az_ndZj1JokK1H9-0xI6cJ0oXYsijaVxFdFU/exec";
 
     // 1. Asignar Fecha y Hora actual automáticamente
     const campoFechaHora = document.getElementById("fechaHora");
