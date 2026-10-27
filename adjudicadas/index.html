@@ -121,17 +121,11 @@
 
                 <div
                     class="flex items-center justify-between md:justify-end space-x-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-700/60">
-                    <div class="text-left md:text-right">
-                        <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Folio
-                            Adjudicación</span>
-                        <span id="headerFolio"
-                            class="font-mono text-xs sm:text-sm font-bold text-blue-400">ADJ-20261027-0000</span>
-                    </div>
-                    <button type="button" onclick="AsefiApp.resetForm()"
+                    <a type="button" href="../index.html"
                         class="bg-slate-800/90 hover:bg-slate-700 text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2 shrink-0">
                         <i class="fa-solid fa-arrow-left text-xs"></i>
                         <span>Regresar al menú</span>
-                    </button>
+                    </a>
                 </div>
 
             </div>
@@ -293,12 +287,19 @@
 
                     <div>
                         <label for="marca" class="asefi-label">Marca <span class="text-red-500">*</span></label>
-                        <input type="text" id="marca" required placeholder="Ej. Nissan, Ford, Toyota"
-                            class="asefi-input">
+                        <select id="marca" name="marca" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione marca...</option>
+                            <option value="Nissan">Nissan</option>
+                            <option value="Ford">Ford</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Chevrolet">Chevrolet</option>
+                            <option value="Inmueble">Inmueble</option>
+                            <option value="Otro">Otro Bien</option>
+                        </select>
                     </div>
 
                     <div>
-                        <label for="modelo" class="asefi-label">Modelo / Año <span class="text-red-500">*</span></label>
+                        <label for="modelo" class="asefi-label">Año / Modelo<span class="text-red-500">*</span></label>
                         <input type="text" id="modelo" required placeholder="Ej. NP300 2022" class="asefi-input">
                     </div>
 
@@ -308,10 +309,13 @@
                     </div>
 
                     <div>
-                        <label for="tipoUnidad" class="asefi-label">Tipo de Unidad <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" id="tipoUnidad" required placeholder="Ej. PickUp, Sedan, SUV"
-                            class="asefi-input">
+                        <label for="tipoUnidad" class="asefi-label">Tipo de Unidad <span class="text-red-500">*</span></label>
+                        <select id="marca" name="marca" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione marca...</option>
+                            <option value="PickUp">PickUp</option>
+                            <option value="Sedan">Sedan</option>
+                            <option value="SUV">SUV</option>
+                        </select>
                     </div>
 
                     <div>
@@ -335,10 +339,8 @@
                     </div>
 
                     <div class="sm:col-span-2 lg:col-span-3">
-                        <label for="razonAdjudicacion" class="asefi-label">Razón de Adjudicación <span
-                                class="text-red-500">*</span></label>
-                        <textarea id="razonAdjudicacion" rows="3" required
-                            placeholder="Se deberá exponer la razón de adjudicación, en pocas palabras..."
+                        <label for="razonAdjudicacion" class="asefi-label">Razón de Adjudicación <span class="text-red-500">*</span></label>
+                        <textarea id="razonAdjudicacion" rows="3" required placeholder="Se deberá exponer la razón de adjudicación, en pocas palabras..."
                             class="asefi-input resize-y"></textarea>
                     </div>
                 </div>
