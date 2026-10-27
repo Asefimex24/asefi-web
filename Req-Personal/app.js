@@ -1,17 +1,17 @@
-/**
- * Lógica principal de la aplicación Asefiweb - Requisición de Personal
- * Archivo: apps.js
- */
+//  1.-Lógica Web - Requisición de Personal ASEFIMEX
+//  2.-Conexión directa a Google Sheets mediante Google Apps Script
+
+// REEMPLAZA ESTA URL CON LA QUE TE DÉ GOOGLE APPS SCRIPT AL PUBLICAR COMO WEB APP
+const WEB_APP_URL = "{ENLACE_DE_TU_WEB_APP}";
+
 const AsefiApp = (function () {
     let activeFolio = '';
 
-    // Inicialización de la app
     function init() {
         updateTimestamp();
         generateFolio();
     }
 
-    // Actualiza la marca de tiempo en el campo de fecha readonly
     function updateTimestamp() {
         const now = new Date();
         const year = now.getFullYear();
@@ -28,7 +28,6 @@ const AsefiApp = (function () {
         }
     }
 
-    // Generador de folio único institucional
     function generateFolio() {
         const now = new Date();
         const dateCode = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
@@ -41,7 +40,6 @@ const AsefiApp = (function () {
         }
     }
 
-    // Controla la visibilidad del campo condicional de sustitución
     function toggleSustitucion(val) {
         const campo = document.getElementById('campoSustitucion');
         const input = document.getElementById('colaboradorSustituir');
@@ -57,7 +55,6 @@ const AsefiApp = (function () {
         }
     }
 
-    // Formatea la etiqueta con el nombre del archivo seleccionado
     function updateFileName(input) {
         const label = document.getElementById('fileNameLabel');
         if (!label) return;
@@ -73,7 +70,6 @@ const AsefiApp = (function () {
         }
     }
 
-    // Muestra mensajes de alerta en pantalla
     function showAlert(text, isError = true) {
         const box = document.getElementById('alertBox');
         const icon = document.getElementById('alertIcon');
@@ -93,24 +89,52 @@ const AsefiApp = (function () {
         box.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // Cierra la caja de alerta
     function closeAlert() {
         const box = document.getElementById('alertBox');
         if (box) box.classList.add('hidden');
     }
 
-    // Manejo y validación del formulario
-    function handleSubmit(e) {
+    // Convierte un archivo a base64 para enviarlo a Google Apps Script
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                const encoded = reader.result.split(',')[1];
+                resolve({
+                    base64: encoded,
+                    mimeType: file.type,
+                    fileName: file.name
+                });
+            };
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    async function handleSubmit(e) {
         e.preventDefault();
         closeAlert();
 
-        // Lista de campos requeridos obligatorios
         const requiredFields = [
-            'nombreEjecutivo', 'sucursal', 'telefonoEjecutivo', 'correoEjecutivo',
-            'areaDepartamento', 'nombrePuesto', 'numPlazas', 'tipoVacante',
-            'motivoRequisicion', 'escolaridad', 'carreraAfine', 'experiencia',
-            'softwareHerramientas', 'horarioTrabajo', 'diasLaborables',
-            'sueldoPropuesto', 'tipoContrato', 'disponibilidadViajar', 'prestaciones'
+            'nombreEjecutivo',
+            'sucursal',
+            'telefonoEjecutivo',
+            'correoEjecutivo',
+            'areaDepartamento',
+            'nombrePuesto',
+            'numPlazas',
+            'tipoVacante',
+            'motivoRequisicion',
+            'escolaridad',
+            'carreraAfine',
+            'experiencia',
+            'softwareHerramientas',
+            'horarioTrabajo',
+            'diasLaborables',
+            'sueldoPropuesto',
+            'tipoContrato',
+            'disponibilidadViajar',
+            'prestaciones'
         ];
 
         let missing = false;
@@ -124,7 +148,6 @@ const AsefiApp = (function () {
             }
         });
 
-        // Validación especial para sustitución
         const tipoVac = document.getElementById('tipoVacante').value;
         if (tipoVac === 'Reemplazo / Sustitución' || tipoVac === 'Incapacidad / Maternidad') {
             const colab = document.getElementById('colaboradorSustituir');
@@ -141,28 +164,94 @@ const AsefiApp = (function () {
             return;
         }
 
-        // Cargar datos en el comprobante modal
-        document.getElementById('modalFolio').textContent = activeFolio;
-        document.getElementById('modalFecha').textContent = document.getElementById('fechaSolicitud').value;
-        document.getElementById('resSolicitante').textContent = document.getElementById('nombreEjecutivo').value;
-        document.getElementById('resSucursalArea').textContent = `${document.getElementById('sucursal').value} (${document.getElementById('areaDepartamento').value})`;
-        document.getElementById('resPuesto').textContent = document.getElementById('nombrePuesto').value;
-        document.getElementById('resPlazasTipo').textContent = `${document.getElementById('numPlazas').value} plaza(s) - ${document.getElementById('tipoVacante').value}`;
-        document.getElementById('resSueldo').textContent = document.getElementById('sueldoPropuesto').value;
-
+        // Preparar archivo adjunto si existe
         const fileEl = document.getElementById('fileInput');
-        document.getElementById('resArchivo').textContent = (fileEl.files && fileEl.files.length > 0) ? fileEl.files[0].name : 'Ninguno';
+        let fileData = null;
+        if (fileEl && fileEl.files && fileEl.files.length > 0) {
+            try {
+                fileData = await fileToBase64(fileEl.files[0]);
+            } catch (err) {
+                showAlert('Error al procesar el archivo adjunto.');
+                return;
+            }
+        }
 
-        // Mostrar Modal de Acuse
-        document.getElementById('receiptModal').classList.remove('hidden');
+        // Construir objeto mapeado a las 40 columnas de la Hoja de Cálculo
+        const payload = {
+            marcaTemporal: document.getElementById('fechaSolicitud').value,
+            correo: document.getElementById('correoEjecutivo').value,
+            nombrePuesto: document.getElementById('nombrePuesto').value,
+            sucursal: document.getElementById('sucursal').value,
+            areaSolicita: document.getElementById('areaDepartamento').value,
+            numVacantes: document.getElementById('numPlazas').value,
+            motivoVacante: document.getElementById('tipoVacante').value + ' - ' + document.getElementById('motivoRequisicion').value,
+            rangoEdad: document.getElementById('rangoEdad') ? document.getElementById('rangoEdad').value : 'Indistinto',
+            genero: document.getElementById('genero') ? document.getElementById('genero').value : 'Indistinto',
+            escolaridad: document.getElementById('escolaridad').value,
+            tituloCedula: 'Requerido',
+            horarioLaboral: document.getElementById('horarioTrabajo').value + ' (' + document.getElementById('diasLaborables').value + ')',
+            experienciaMinima: document.getElementById('experiencia').value,
+            habilidades: document.getElementById('carreraAfine').value,
+            softwareProgramas: document.getElementById('softwareHerramientas').value,
+            disponibilidadViajar: document.getElementById('disponibilidadViajar').value,
+            lugaresViaje: 'Según requerimiento',
+            manejoVehiculo: 'No indispensable',
+            tipoLicencia: 'N/A',
+            tipoContrato: document.getElementById('tipoContrato').value,
+            viaticos: 'Según políticas',
+            comisiones: 'N/A',
+            personalCargo: 'No especificado',
+            equipoAsignado: 'Equipo de cómputo estándar',
+            funciones: document.getElementById('motivoRequisicion').value,
+            comentariosAdicionales: (document.getElementById('observacionesExtra') ? document.getElementById('observacionesExtra').value : '') + ' [Tel: ' + document.getElementById('telefonoEjecutivo').value + ']',
+            nombreSolicita: document.getElementById('nombreEjecutivo').value,
+            nombreAutoriza: 'Pendiente de Validación',
+            salarioMensual: document.getElementById('sueldoPropuesto').value,
+            localidad: document.getElementById('sucursal').value,
+            codigo: activeFolio,
+            file: fileData
+        };
+
+        // Mostrar indicador de carga
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const origText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i><span>Enviando...</span>';
+
+        try {
+            // Envío con no-cors o text/plain a Google Apps Script
+            await fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+
+            // Llenar Modal de Confirmación
+            document.getElementById('modalFolio').textContent = activeFolio;
+            document.getElementById('modalFecha').textContent = payload.marcaTemporal;
+            document.getElementById('resSolicitante').textContent = payload.nombreSolicita;
+            document.getElementById('resSucursalArea').textContent = `${payload.sucursal} (${payload.areaSolicita})`;
+            document.getElementById('resPuesto').textContent = payload.nombrePuesto;
+            document.getElementById('resPlazasTipo').textContent = `${payload.numVacantes} plaza(s) - ${document.getElementById('tipoVacante').value}`;
+            document.getElementById('resSueldo').textContent = payload.salarioMensual;
+            document.getElementById('resArchivo').textContent = fileData ? fileData.fileName : 'Ninguno';
+
+            // Mostrar el Modal
+            document.getElementById('receiptModal').classList.remove('hidden');
+        } catch (error) {
+            showAlert('Ocurrió un error al conectar con el servidor. Intente de nuevo.');
+            console.error('Error al enviar:', error);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origText;
+        }
     }
 
-    // Cierra el modal de acuse
     function closeModal() {
         document.getElementById('receiptModal').classList.add('hidden');
     }
 
-    // Resetea el formulario a su estado inicial
     function resetForm() {
         const form = document.getElementById('requisicionForm');
         if (form) form.reset();
@@ -192,7 +281,6 @@ const AsefiApp = (function () {
     };
 })();
 
-// Evento de arranque al cargar la página
 window.onload = function () {
     AsefiApp.init();
 };
