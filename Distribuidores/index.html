@@ -150,7 +150,7 @@
             <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
                 <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
                     <i class="fa-solid fa-user-check text-blue-600 text-lg"></i>
-                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">1. Datos del Cliente y Registro</h2>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">1. Datos del Prospecto y Registro</h2>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -160,16 +160,16 @@
                     </div>
 
                     <div>
-                        <label for="nombreCliente" class="asefi-label">Nombre del Cliente <span
+                        <label for="nombreprospecto" class="asefi-label">Nombre del Prospecto <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" id="nombreCliente" required placeholder="Nombre completo"
+                        <input type="text" id="nombreprospecto" required placeholder="Nombre completo"
                             class="asefi-input">
                     </div>
 
                     <div>
-                        <label for="telefonoCliente" class="asefi-label">Teléfono del Cliente <span
+                        <label for="telefonoProspecto" class="asefi-label">Teléfono del Prospecto <span
                                 class="text-red-500">*</span></label>
-                        <input type="tel" id="telefonoCliente" required placeholder="Ej. 9611234567"
+                        <input type="tel" id="telefonoProspecto" required placeholder="Ej. 9611234567"
                             class="asefi-input">
                     </div>
 
@@ -177,12 +177,12 @@
                         <label for="sucursal" class="asefi-label">Sucursal <span class="text-red-500">*</span></label>
                         <select id="sucursal" required class="asefi-input cursor-pointer">
                             <option value="" disabled selected>Seleccione la sucursal...</option>
-                            <option value="Corporativo Tuxtla Gutiérrez">Corporativo Tuxtla Gutiérrez</option>
-                            <option value="Sucursal CDMX - Reforma">Sucursal CDMX - Reforma</option>
-                            <option value="Sucursal Guadalajara">Sucursal Guadalajara</option>
-                            <option value="Sucursal Monterrey">Sucursal Monterrey</option>
-                            <option value="Sucursal Puebla">Sucursal Puebla</option>
-                            <option value="Sucursal Veracruz">Sucursal Veracruz</option>
+                            <option value="CORPORATIVO TUXTLA GUTIÉRREZ">Corporativo Tuxtla Gutiérrez</option>
+                            <option value="SUCURSAL CDMX - REFORMA">Sucursal CDMX - Reforma</option>
+                            <option value="SUCURSAL GUADALAJARA">Sucursal Guadalajara</option>
+                            <option value="SUCURSAL MONTERREY">Sucursal Monterrey</option>
+                            <option value="SUCURSAL PUEBLA">Sucursal Puebla</option>
+                            <option value="SUCURSAL VERACRUZ">Sucursal Veracruz</option>
                         </select>
                     </div>
 
@@ -211,8 +211,19 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                     <div>
                         <label for="producto" class="asefi-label">Producto <span class="text-red-500">*</span></label>
-                        <input type="text" id="producto" required placeholder="Ej. Crédito Personal, PyME"
-                            class="asefi-input">
+                        <select id="producto" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione opción...</option>
+                            <option value="C-MOVIL">C-Movil</option>
+                            <option value="C-ESPECIAL">C-Especial</option>
+                            <option value="C-EMPRENDEDOR NUEVO">C-Emprendedor</option>
+                            <option value="CREDICONTADO">Credicontado</option>
+                            <option value="C-FACIL">C-Facil</option>
+                            <option value="C-COSECHA">C-Cosecha</option>
+                            <option value="C-MUJER">C-Mujer</option>
+                            <option value="C-AUTO">C-Auto</option>
+                            <option value="C-PREFERENTE">C-Preferente</option>
+                            <option value="C-DISTRIBUIDOR">C-Distribuidor</option>
+                        </select>
                     </div>
 
                     <div>
@@ -222,26 +233,16 @@
                     </div>
 
                     <div>
-                        <label for="esRenovacion" class="asefi-label">¿Es Renovación? <span
-                                class="text-red-500">*</span></label>
-                        <select id="esRenovacion" required class="asefi-input cursor-pointer">
-                            <option value="" disabled selected>Seleccione opción...</option>
-                            <option value="SI">SÍ</option>
-                            <option value="NO">NO</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="analista" class="asefi-label">Analista Asignado <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" id="analista" required placeholder="Nombre del analista" class="asefi-input">
-                    </div>
-
-                    <div>
                         <label for="distribuidor" class="asefi-label">Distribuidor / Promotor <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" id="distribuidor" required placeholder="Nombre o clave del distribuidor"
-                            class="asefi-input">
+                                <select id="distribuidor" name="distribuidor" required class="asefi-input cursor-pointer">
+                                    <option value="" disabled selected>Seleccione distribuidor...</option>
+                                    <option value="DISTRIBUIDOR A">Distribuidor A</option>
+                                    <option value="DISTRIBUIDOR B">Distribuidor B</option>
+                                    <option value="DISTRIBUIDOR C">Distribuidor C</option>
+                                </select>
+                        <!-- <input type="text" id="distribuidor" required placeholder="Nombre o clave del distribuidor"
+                            class="asefi-input"> -->
                     </div>
 
                     <div class="sm:col-span-2 lg:col-span-3">
@@ -254,95 +255,28 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN 3: REFERENCIAS PERSONALES -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
-                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
-                    <i class="fa-solid fa-users text-blue-600 text-lg"></i>
-                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">3. Referencias Personales</h2>
+        <!-- SECCIÓN 3: DOCUMENTOS Y COMENTARIOS -->
+        <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-8">
+            <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                <i class="fa-solid fa-folder-open text-blue-600 text-lg"></i>
+                <h2 class="text-slate-900 font-bold text-base sm:text-lg">3. Carga de Documentación y Comentarios</h2>
+            </div>
+        
+            <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 sm:gap-5">
+                <div>
+                    <label for="ineFrente" class="asefi-label">INE Frente (Imagen o PDF)</label>
+                    <input type="file" id="ineFrente" accept="image/*,.pdf"
+                        class="asefi-input file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                    <!-- Referencia 1 -->
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
-                        <h3 class="font-semibold text-slate-800 text-sm">Referencia 1</h3>
-                        <div>
-                            <label for="referencia1Nom" class="asefi-label">Nombre Completo <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" id="referencia1Nom" required placeholder="Nombre de la ref. 1"
-                                class="asefi-input">
-                        </div>
-                        <div>
-                            <label for="referencia1Tel" class="asefi-label">Teléfono <span
-                                    class="text-red-500">*</span></label>
-                            <input type="tel" id="referencia1Tel" required placeholder="Ej. 9617654321"
-                                class="asefi-input">
-                        </div>
-                    </div>
-
-                    <!-- Referencia 2 -->
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
-                        <h3 class="font-semibold text-slate-800 text-sm">Referencia 2</h3>
-                        <div>
-                            <label for="referencia2Nom" class="asefi-label">Nombre Completo <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" id="referencia2Nom" required placeholder="Nombre de la ref. 2"
-                                class="asefi-input">
-                        </div>
-                        <div>
-                            <label for="referencia2Tel" class="asefi-label">Teléfono <span
-                                    class="text-red-500">*</span></label>
-                            <input type="tel" id="referencia2Tel" required placeholder="Ej. 9619876543"
-                                class="asefi-input">
-                        </div>
-                    </div>
+        
+                <div class="sm:col-span-2">
+                    <label for="comentarios" class="asefi-label">Comentarios Adicionales</label>
+                    <textarea id="comentarios" rows="3"
+                        placeholder="Escriba aquí observaciones relevantes del cliente o la solicitud..."
+                        class="asefi-input resize-y"></textarea>
                 </div>
-            </section>
-
-            <!-- SECCIÓN 4: DOCUMENTOS Y COMENTARIOS -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-8">
-                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
-                    <i class="fa-solid fa-folder-open text-blue-600 text-lg"></i>
-                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">4. Ligas de Documentación y Comentarios
-                    </h2>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                    <div>
-                        <label for="ineFrente" class="asefi-label">INE Frente (URL / Enlace)</label>
-                        <input type="url" id="ineFrente" placeholder="https://drive.google.com/..." class="asefi-input">
-                    </div>
-
-                    <div>
-                        <label for="ineReverso" class="asefi-label">INE Reverso (URL / Enlace)</label>
-                        <input type="url" id="ineReverso" placeholder="https://drive.google.com/..."
-                            class="asefi-input">
-                    </div>
-
-                    <div>
-                        <label for="compDomicilio" class="asefi-label">Comprobante de Domicilio (URL / Enlace)</label>
-                        <input type="url" id="compDomicilio" placeholder="https://drive.google.com/..."
-                            class="asefi-input">
-                    </div>
-
-                    <div>
-                        <label for="reporteCc" class="asefi-label">Reporte Buró de Crédito / CC (URL / Enlace)</label>
-                        <input type="url" id="reporteCc" placeholder="https://drive.google.com/..." class="asefi-input">
-                    </div>
-
-                    <div>
-                        <label for="autorizacion" class="asefi-label">Formato Autorización (URL / Enlace)</label>
-                        <input type="url" id="autorizacion" placeholder="https://drive.google.com/..."
-                            class="asefi-input">
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <label for="comentarios" class="asefi-label">Comentarios Adicionales</label>
-                        <textarea id="comentarios" rows="3"
-                            placeholder="Escriba aquí observaciones relevantes del cliente o la solicitud..."
-                            class="asefi-input resize-y"></textarea>
-                    </div>
-                </div>
-            </section>
+            </div>
+        </section>
 
             <!-- BOTONES DE ACCIÓN -->
             <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-2">
