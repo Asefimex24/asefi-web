@@ -131,8 +131,10 @@
                 <div
                     class="flex items-center justify-between md:justify-end space-x-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-700/60">
                     <div class="text-left md:text-right">
-                        <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Folio Requisición</span>
-                        <span id="headerFolio" class="font-mono text-xs sm:text-sm font-bold text-blue-400">REQ-20261024-0000</span>
+                        <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Folio
+                            Requisición</span>
+                        <span id="headerFolio"
+                            class="font-mono text-xs sm:text-sm font-bold text-blue-400">REQ-20261024-0000</span>
                     </div>
                     <button type="button" onclick="AsefiApp.resetForm()"
                         class="bg-slate-800/90 hover:bg-slate-700 text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2 shrink-0">
@@ -172,14 +174,14 @@
                         <input type="text" id="fechaSolicitud" readonly
                             class="asefi-input asefi-input-disabled font-mono">
                     </div>
-
                     <div>
-                        <label for="nombreEjecutivo" class="asefi-label">Nombre del Ejecutivo / Solicitante <span
+                        <label for="nombreSolicitante" class="asefi-label">Nombre del Solicitante <span
                                 class="text-red-500">*</span></label>
-                        <select id="nombreEjecutivo" required class="asefi-input cursor-pointer">
-                            <option value="" disabled selected>Seleccione ejecutivo...</option>
-                            <option value="">Ing. Roberto Garza Treviño</option>
-                            <option value="Otro Solicitante">-- Registrar Otro Solicitante --</option>
+                        <select id="nombreSolicitante" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione solicitante...</option>
+                            <option value="TEST1">TEST1</option>
+                            <option value="TEST2">TEST2</option>
+                            <option value="TEST3">TEST3</option>
                         </select>
                     </div>
 
@@ -197,16 +199,16 @@
                     </div>
 
                     <div>
-                        <label for="telefonoEjecutivo" class="asefi-label">Teléfono del Ejecutivo <span
+                        <label for="telefonoSolicitante" class="asefi-label">Teléfono del Solicitante <span
                                 class="text-red-500">*</span></label>
-                        <input type="tel" id="telefonoEjecutivo" required placeholder="Ej. 5512345678"
+                        <input type="tel" id="telefonoSolicitante" required placeholder="Ej. 5512345678"
                             class="asefi-input">
                     </div>
 
                     <div>
-                        <label for="correoEjecutivo" class="asefi-label">Correo del Ejecutivo <span
+                        <label for="correoSolicitante" class="asefi-label">Correo del Solicitante <span
                                 class="text-red-500">*</span></label>
-                        <input type="email" id="correoEjecutivo" required placeholder="ejemplo@empresa.com"
+                        <input type="email" id="correoSolicitante" required placeholder="ejemplo@empresa.com"
                             class="asefi-input">
                     </div>
 
@@ -215,13 +217,13 @@
                                 class="text-red-500">*</span></label>
                         <select id="areaDepartamento" required class="asefi-input cursor-pointer">
                             <option value="" disabled selected>Seleccione el área...</option>
-                            <option value="Capital Humano">Capital Humano</option>
-                            <option value="Tecnologías de la Información">Tecnologías de la Información</option>
-                            <option value="Riesgos y Cumplimiento">Riesgos y Cumplimiento</option>
-                            <option value="Crédito y Promoción">Crédito y Promoción</option>
-                            <option value="Finanzas y Contabilidad">Finanzas y Contabilidad</option>
-                            <option value="Operaciones">Operaciones</option>
-                            <option value="Jurídico">Jurídico</option>
+                            <option value="RECURSOS HUMANOS">Recursos Humanos</option>
+                            <option value="TECNOLOGÍAS DE LA INFORMACIÓN">Tecnologías de la Información</option>
+                            <option value="RIESGOS Y CUMPLIMIENTO">Riesgos y Cumplimiento</option>
+                            <option value="CRÉDITO Y PROMOCIÓN">Crédito y Promoción</option>
+                            <option value="FINANZAS Y CONTABILIDAD">Finanzas y Contabilidad</option>
+                            <option value="OPERACIONES">Operaciones</option>
+                            <option value="JURÍDICO">Jurídico</option>
                         </select>
                     </div>
                 </div>
