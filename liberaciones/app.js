@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputCredito = document.getElementById("credito");
 
   if (inputCredito) {
+<<<<<<< HEAD
     // Variable para evitar ejecuciones duplicadas si se presiona Enter y luego se dispara 'blur'
     let ejecutandoConsulta = false;
 
@@ -130,6 +131,40 @@ document.addEventListener("DOMContentLoaded", () => {
         } finally {
           ejecutandoConsulta = false;
         }
+=======
+    // Variable para evitar consultas duplicadas si se disparan blur y enter al mismo tiempo
+    let ejecutandoBusqueda = false;
+
+    const procesarBusquedaCredito = async () => {
+      const tipoSolicitud = document.getElementById("tipoSolicitud").value;
+      const numCredito = inputCredito.value.trim();
+
+      // Solo ejecutar si es "Solventación", hay texto y no hay una búsqueda en proceso
+      if (tipoSolicitud === "Solventación" && numCredito !== "" && !ejecutandoBusqueda) {
+        ejecutandoBusqueda = true;
+
+        await consultarCreditoAPI(numCredito);
+        
+        // Enfocar en el campo de comentario al finalizar
+        const campoComentario = document.getElementById("comentario");
+        // if (campoComentario)
+         campoComentario.focus();
+        ejecutandoBusqueda = false;
+      }
+    };
+
+    // 1. Evento BLUR: Se dispara automáticamente en Android cuando el usuario 
+    // toca el siguiente campo o hace tap fuera del teclado.
+    inputCredito.addEventListener("blur", () => {
+      procesarBusquedaCredito();
+    });
+
+    // 2. Evento KEYDOWN: Soporte para escritorio (Tab / Enter) y teclados físicos
+    inputCredito.addEventListener("keydown", (e) => {
+      if (e.key === "Tab" || e.key === "Enter") {
+        e.preventDefault(); // Evita salto no deseado antes de consultar
+        inputCredito.blur(); // Dispara el blur y oculta el teclado en móviles
+>>>>>>> 4c41c140a90741d0dd7efb37d4e8ff720d918bc7
       }
     }
 
@@ -154,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function consultarCreditoAPI(credito) {
   Swal.fire({
     title: "Consultando crédito...",
-    text: "Buscando información en la base de datos...",
+    text: "Consultando información ...",
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
@@ -177,9 +212,7 @@ async function consultarCreditoAPI(credito) {
       if (d.XP_AZUL) document.getElementById("xpAzul").value = d.XP_AZUL;
       if (d.NOMBRE_FACTURA) document.getElementById("nombreFactura").value = d.NOMBRE_FACTURA;
       if (d.FOLIO_FACTURA) document.getElementById("folioFactura").value = d.FOLIO_FACTURA;
-
      
-
       Swal.fire({
         icon: "success",
         title: "¡Crédito localizado!",

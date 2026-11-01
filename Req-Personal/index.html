@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASEFIMEX - Requisición de Personal</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        asefi: {
+                            headerBg: '#131c2e',    // Header azul oscuro de ASEFIMEX
+                            cardBorder: '#e2e8f0',  // Borde slate-200
+                            blueIcon: '#2563eb',    // Azul primario de iconos
+                            btnBlue: '#1d4ed8',     // Azul primario de botones
+                            disabledBg: '#ebf0f5'   // Fondo campo readonly
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .asefi-input {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.875rem;
+            color: #1e293b;
+            transition: all 0.15s ease-in-out;
+            width: 100%;
+        }
+
+        .asefi-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .asefi-input-disabled {
+            background-color: #ebf0f5 !important;
+            color: #475569 !important;
+            border-color: #cbd5e1 !important;
+            cursor: not-allowed;
+        }
+
+        .asefi-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 0.375rem;
+        }
+
+        @media print {
+            body {
+                background: #ffffff !important;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #printableReceipt,
+            #printableReceipt * {
+                visibility: visible;
+            }
+
+            #printableReceipt {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-full py-6 sm:py-8 px-3 sm:px-6 lg:px-8">
+
+    <div class="max-w-5xl mx-auto">
+
+        <!-- ENCABEZADO PRINCIPAL -->
+        <header class="bg-[#131c2e] text-white rounded-2xl p-5 sm:p-7 mb-6 shadow-md border border-slate-800">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                <div class="flex items-start space-x-3.5">
+                    <div class="mt-1 text-white text-2xl sm:text-3xl shrink-0">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
+                            Requisición de Personal
+                        </h1>
+                        <p class="text-slate-400 text-xs sm:text-sm mt-0.5">
+                            Gestión de requerimientos de personal y capital humano ASEFIMEX
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-center justify-between md:justify-end space-x-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-700/60">
+                    <div class="text-left md:text-right">
+                        <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Folio
+                            Requisición</span>
+                        <span id="headerFolio"
+                            class="font-mono text-xs sm:text-sm font-bold text-blue-400">REQ-20261024-0000</span>
+                    </div>
+                    <button type="button" onclick="AsefiApp.resetForm()"
+                        class="bg-slate-800/90 hover:bg-slate-700 text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2 shrink-0">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                        <span>Regresar al menú</span>
+                    </button>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- ---------------------CAJA DE ALERTAS--------------------- -->
+        <div id="alertBox"
+            class="hidden mb-6 p-4 rounded-xl border text-sm shadow-sm transition-all flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i id="alertIcon" class="fa-solid text-lg"></i>
+                <span id="alertText" class="font-medium"></span>
+            </div>
+            <button type="button" onclick="AsefiApp.closeAlert()" class="text-slate-400 hover:text-slate-600 p-1">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+        </div>
+
+        <!-- FORMULARIO -->
+        <form id="requisicionForm" onsubmit="AsefiApp.handleSubmit(event)" novalidate>
+
+            <!-- SECCIÓN 1: DATOS DEL SOLICITANTE -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-user text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">1. Datos del Solicitante</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    <div>
+                        <label class="asefi-label">Fecha <span class="text-red-500">*</span></label>
+                        <input type="text" id="fechaSolicitud" readonly
+                            class="asefi-input asefi-input-disabled font-mono">
+                    </div>
+                    <div>
+                        <label for="nombreSolicitante" class="asefi-label">Nombre del Solicitante <span
+                                class="text-red-500">*</span></label>
+                        <select id="nombreSolicitante" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione solicitante...</option>
+                            <option value="TEST1">TEST1</option>
+                            <option value="TEST2">TEST2</option>
+                            <option value="TEST3">TEST3</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="sucursal" class="asefi-label">Sucursal <span class="text-red-500">*</span></label>
+                        <select id="sucursal" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione la sucursal...</option>
+                            <option value="Corporativo Tuxtla Gutiérrez">Corporativo Tuxtla Gutiérrez</option>
+                            <option value="Sucursal CDMX - Reforma">Sucursal CDMX - Reforma</option>
+                            <option value="Sucursal Guadalajara">Sucursal Guadalajara</option>
+                            <option value="Sucursal Monterrey">Sucursal Monterrey</option>
+                            <option value="Sucursal Puebla">Sucursal Puebla</option>
+                            <option value="Sucursal Veracruz">Sucursal Veracruz</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="telefonoSolicitante" class="asefi-label">Teléfono del Solicitante <span
+                                class="text-red-500">*</span></label>
+                        <input type="tel" id="telefonoSolicitante" required placeholder="Ej. 5512345678"
+                            class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="correoSolicitante" class="asefi-label">Correo del Solicitante <span
+                                class="text-red-500">*</span></label>
+                        <input type="email" id="correoSolicitante" required placeholder="ejemplo@empresa.com"
+                            class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="areaDepartamento" class="asefi-label">Área / Departamento <span
+                                class="text-red-500">*</span></label>
+                        <select id="areaDepartamento" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione el área...</option>
+                            <option value="RECURSOS HUMANOS">Recursos Humanos</option>
+                            <option value="TECNOLOGÍAS DE LA INFORMACIÓN">Tecnologías de la Información</option>
+                            <option value="RIESGOS Y CUMPLIMIENTO">Riesgos y Cumplimiento</option>
+                            <option value="CRÉDITO Y PROMOCIÓN">Crédito y Promoción</option>
+                            <option value="FINANZAS Y CONTABILIDAD">Finanzas y Contabilidad</option>
+                            <option value="OPERACIONES">Operaciones</option>
+                            <option value="JURÍDICO">Jurídico</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: DETALLE DE LA VACANTE -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-briefcase text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">2. Detalle de la Vacante</h2>
+                </div>
+
+                <div class="space-y-4 sm:space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+                        <div class="sm:col-span-2">
+                            <label for="nombrePuesto" class="asefi-label">Nombre del Puesto Vacante <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" id="nombrePuesto" required
+                                placeholder="Ej. Analista Senior de Riesgos Financieros" class="asefi-input">
+                        </div>
+                        <div>
+                            <label for="numPlazas" class="asefi-label">Número de Plazas <span
+                                    class="text-red-500">*</span></label>
+                            <input type="number" id="numPlazas" min="1" value="1" required class="asefi-input">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        <div>
+                            <label for="tipoVacante" class="asefi-label">Tipo de Vacante <span
+                                    class="text-red-500">*</span></label>
+                            <select id="tipoVacante" required onchange="AsefiApp.toggleSustitucion(this.value)"
+                                class="asefi-input cursor-pointer">
+                                <option value="" disabled selected>Seleccione el tipo de vacante...</option>
+                                <option value="Nueva Creación">Nueva Creación</option>
+                                <option value="Reemplazo / Sustitución">Reemplazo / Sustitución</option>
+                                <option value="Incapacidad / Maternidad">Incapacidad / Maternidad</option>
+                                <option value="Proyecto Temporal">Proyecto Temporal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="prioridadVacante" class="asefi-label">Prioridad / Urgencia <span
+                                    class="text-red-500">*</span></label>
+                            <select id="prioridadVacante" required class="asefi-input cursor-pointer">
+                                <option value="Normal">Normal (Tiempo estándar 15-20 días)</option>
+                                <option value="Urgente">Urgente (Requerido &lt; 10 días)</option>
+                                <option value="Crítica">Crítica (Atención Inmediata)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="campoSustitucion" class="hidden p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                        <label for="colaboradorSustituir" class="asefi-label">Nombre del Colaborador a Sustituir o
+                            Reemplazar <span class="text-red-500">*</span></label>
+                        <input type="text" id="colaboradorSustituir"
+                            placeholder="Escriba el nombre completo del colaborador previo..." class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="motivoRequisicion" class="asefi-label">Descripción detallada del motivo o
+                            justificación de la vacante <span class="text-red-500">*</span></label>
+                        <textarea id="motivoRequisicion" rows="3" required
+                            placeholder="Describa a detalle las razones por las cuales se requiere esta vacante..."
+                            class="asefi-input resize-y"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: PERFIL DEL PUESTO -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-graduation-cap text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">3. Perfil del Puesto</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    <div>
+                        <label for="escolaridad" class="asefi-label">Escolaridad Mínima <span
+                                class="text-red-500">*</span></label>
+                        <select id="escolaridad" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione la escolaridad...</option>
+                            <option value="Preparatoria / Bachillerato">Preparatoria / Bachillerato</option>
+                            <option value="Técnico Superior Universitario">Técnico Superior Universitario</option>
+                            <option value="Licenciatura / Ingeniería (Pasante)">Licenciatura / Ingeniería (Pasante)
+                            </option>
+                            <option value="Licenciatura / Ingeniería (Titulado)">Licenciatura / Ingeniería (Titulado)
+                            </option>
+                            <option value="Maestría / Posgrado">Maestría / Posgrado</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="carreraAfine" class="asefi-label">Carreras Afines / Especialidad <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="carreraAfine" required
+                            placeholder="Ej. Administración, Finanzas, Contabilidad..." class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="experiencia" class="asefi-label">Experiencia Requerida <span
+                                class="text-red-500">*</span></label>
+                        <select id="experiencia" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione la experiencia...</option>
+                            <option value="Sin experiencia requerida">Sin experiencia requerida</option>
+                            <option value="6 meses a 1 año">6 meses a 1 año</option>
+                            <option value="1 a 3 años">1 a 3 años</option>
+                            <option value="3 a 5 años">3 a 5 años</option>
+                            <option value="Más de 5 años">Más de 5 años</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="rangoEdad" class="asefi-label">Rango de Edad Sugerido</label>
+                        <select id="rangoEdad" class="asefi-input cursor-pointer">
+                            <option value="Indistinto">Indistinto</option>
+                            <option value="18 a 25 años">18 a 25 años</option>
+                            <option value="22 a 35 años">22 a 35 años</option>
+                            <option value="30 a 45 años">30 a 45 años</option>
+                            <option value="45 años en adelante">45 años en adelante</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="genero" class="asefi-label">Género / Sexo</label>
+                        <select id="genero" class="asefi-input cursor-pointer">
+                            <option value="Indistinto">Indistinto</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="idiomas" class="asefi-label">Idiomas Requeridos</label>
+                        <input type="text" id="idiomas" placeholder="Ej. Español Nativo, Inglés Intermedio"
+                            class="asefi-input">
+                    </div>
+
+                    <div class="sm:col-span-2 lg:col-span-3">
+                        <label for="softwareHerramientas" class="asefi-label">Software y Conocimientos Técnicos
+                            Requeridos <span class="text-red-500">*</span></label>
+                        <input type="text" id="softwareHerramientas" required
+                            placeholder="Ej. Excel Avanzado, ERP Financiero, SQL, CRM SalesForce" class="asefi-input">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: CONDICIONES LABORALES -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-clock text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">4. Condiciones Laborales</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    <div>
+                        <label for="horarioTrabajo" class="asefi-label">Horario de Trabajo <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="horarioTrabajo" required
+                            placeholder="Ej. Lunes a Viernes de 08:30 a 18:00 hrs" class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="diasLaborables" class="asefi-label">Días Laborales <span
+                                class="text-red-500">*</span></label>
+                        <select id="diasLaborables" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione días...</option>
+                            <option value="Lunes a Viernes">Lunes a Viernes</option>
+                            <option value="Lunes a Sábado (Medio día)">Lunes a Sábado (Medio día)</option>
+                            <option value="Lunes a Sábado (Completo)">Lunes a Sábado (Completo)</option>
+                            <option value="Turnos Rotativos">Turnos Rotativos</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="sueldoPropuesto" class="asefi-label">Sueldo Mensual Propuesto <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="sueldoPropuesto" required
+                            placeholder="Ej. $18,000.00 a $22,000.00 Brutos" class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="tipoContrato" class="asefi-label">Tipo de Contratación <span
+                                class="text-red-500">*</span></label>
+                        <select id="tipoContrato" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione tipo...</option>
+                            <option value="Indeterminado / Planta">Indeterminado / Planta</option>
+                            <option value="Determinado / Eventual">Determinado / Eventual</option>
+                            <option value="Periodo de Prueba (3 meses)">Periodo de Prueba (3 meses)</option>
+                            <option value="Honorarios / Asimilados">Honorarios / Asimilados</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="disponibilidadViajar" class="asefi-label">Disponibilidad para Viajar <span
+                                class="text-red-500">*</span></label>
+                        <select id="disponibilidadViajar" required class="asefi-input cursor-pointer">
+                            <option value="No requerida">No requerida</option>
+                            <option value="Ocasional (1 a 2 veces por año)">Ocasional (1 a 2 veces por año)</option>
+                            <option value="Frecuente (Constante en la región)">Frecuente (Constante en la región)
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="prestaciones" class="asefi-label">Prestaciones Ofrecidas <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="prestaciones" required
+                            placeholder="Ej. Prestaciones de Ley + SGMM + Vales" class="asefi-input">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 5: EVIDENCIA / DOCUMENTO ADJUNTO Y OBSERVACIONES -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-8">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-paperclip text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">5. Documentación y Observaciones</h2>
+                </div>
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="asefi-label">Perfil de Puesto o Documento Adjunto (PDF o Word)</label>
+                        <div class="flex items-center border border-slate-300 rounded-lg overflow-hidden bg-white">
+                            <label for="fileInput"
+                                class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium px-4 py-2.5 cursor-pointer border-r border-slate-300 transition-colors shrink-0">
+                                Seleccionar archivo
+                            </label>
+                            <input type="file" id="fileInput" onchange="AsefiApp.updateFileName(this)"
+                                accept=".pdf,.doc,.docx,.png,.jpg" class="hidden">
+                            <span id="fileNameLabel" class="text-slate-500 text-sm px-4 truncate">Sin archivos
+                                seleccionados</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1.5">Puede adjuntar el perfil del puesto previo, matriz de
+                            responsabilidades o formato de requisición previo (PDF, Word, PNG).</p>
+                    </div>
+
+                    <div>
+                        <label for="observacionesExtra" class="asefi-label">Observaciones o Comentarios
+                            Adicionales</label>
+                        <textarea id="observacionesExtra" rows="3"
+                            placeholder="Escriba aquí cualquier especificación técnica adicional para la búsqueda del candidato..."
+                            class="asefi-input resize-y"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-2">
+                <button type="button" onclick="AsefiApp.resetForm()"
+                    class="w-full sm:w-auto px-6 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 font-medium text-sm hover:bg-slate-50 transition-colors shadow-sm">
+                    Limpiar Formulario
+                </button>
+                <button type="submit"
+                    class="w-full sm:w-auto px-7 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-sm flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                    <span>Enviar Requisición</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- MODAL DE ACUSE / COMPROBANTE DE ENVÍO -->
+    <div id="receiptModal"
+        class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
+
+            <div id="printableReceipt" class="p-6 sm:p-8">
+                <!-- Header Comprobante -->
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">ASEFIMEX - Solicitud Registrada</h3>
+                        <p class="text-xs text-slate-500">Dirección de Capital Humano & Reclutamiento</p>
+                    </div>
+                    <div class="text-right">
+                        <span
+                            class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-bold text-xs">REGISTRADO</span>
+                    </div>
+                </div>
+
+                <!-- Folio Box -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 grid grid-cols-2 gap-4">
+                    <div>
+                        <span class="block text-xs text-slate-500 uppercase font-semibold">Folio de Requisición</span>
+                        <span id="modalFolio" class="font-mono text-base font-bold text-blue-600"></span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 uppercase font-semibold">Fecha de Registro</span>
+                        <span id="modalFecha" class="font-mono text-sm text-slate-800"></span>
+                    </div>
+                </div>
+
+                <!-- Tabla de Resumen -->
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                        <span class="text-slate-500">Solicitante:</span>
+                        <span id="resSolicitante" class="font-medium text-slate-900 text-right"></span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                        <span class="text-slate-500">Sucursal / Área:</span>
+                        <span id="resSucursalArea" class="font-medium text-slate-900 text-right"></span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                        <span class="text-slate-500">Puesto Vacante:</span>
+                        <span id="resPuesto" class="font-bold text-blue-600 text-right"></span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                        <span class="text-slate-500">Plazas / Tipo:</span>
+                        <span id="resPlazasTipo" class="font-medium text-slate-900 text-right"></span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                        <span class="text-slate-500">Sueldo Propuesto:</span>
+                        <span id="resSueldo" class="font-medium text-slate-900 text-right"></span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-100">
+                        <span class="text-slate-500">Archivo Adjunto:</span>
+                        <span id="resArchivo" class="font-medium text-slate-900 text-right"></span>
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-400 mt-6 text-center">
+                    Esta solicitud ha sido notificada al equipo de Capital Humano de ASEFIMEX. Conserve este folio para
+                    seguimiento.
+                </p>
+            </div>
+
+            <!-- Botones del Modal -->
+            <div
+                class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row justify-end gap-3 no-print">
+                <button type="button" onclick="window.print()"
+                    class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Imprimir Acuse</span>
+                </button>
+                <button type="button" onclick="AsefiApp.closeModal(); AsefiApp.resetForm();"
+                    class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
+                    Aceptar y Finalizar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
