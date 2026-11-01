@@ -13,7 +13,7 @@ function establecerFechaActual() {
 }
 
 
-// ⚠️ REEMPLAZA ESTA URL CON LA QUE TE DÉ GOOGLE APPS SCRIPT AL PUBLICAR
+
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxukEjE4f56MzLhzABPGOlhIffkZhRe8Zj8FkVZT5e2DjIkV1mBwcSKc9NIpgy-c33I/exec";
 
 
