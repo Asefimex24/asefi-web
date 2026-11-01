@@ -168,18 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 1. Evento 'blur': Se dispara cuando el campo pierde el foco (ideal para móviles y Tab en PC)
-    inputCredito.addEventListener("blur", async () => {
-      await procesarConsulta();
-    });
-
-    // 2. Evento 'keydown': Captura el botón "Enter" o "Siguiente" del teclado virtual/físico
-    inputCredito.addEventListener("keydown", async (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault(); // Evita que el formulario se envíe si está dentro de un <form>
-        inputCredito.blur(); // Remueve el foco, lo que disparará la pérdida de foco de forma limpia
-      }
-    });
   }
 });
 
