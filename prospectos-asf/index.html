@@ -16,6 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -144,7 +146,7 @@
         </div>
 
         <!-- FORMULARIO PRINCIPAL -->
-        <form id="creditoForm" onsubmit="AsefiApp.handleSubmit(event)" novalidate>
+        <form id="prospectoForm">
 
             <!-- SECCIÓN 1: DATOS DEL CLIENTE Y REGISTRO -->
             <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
@@ -162,7 +164,7 @@
                     <div>
                         <label for="nombreprospecto" class="asefi-label">Nombre del Prospecto <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" id="nombreprospecto" required placeholder="Nombre completo"
+                        <input type="text" id="nombreProspecto" required placeholder="Nombre completo"
                             class="asefi-input">
                     </div>
 
@@ -230,13 +232,13 @@
 
                     <div>
                         <label for="ejecutivo" class="asefi-label">Ejecutivo <span class="text-red-500">*</span></label>
-                        <input type="text" id="ejecutivo" required placeholder="Nombre del ejecutivo"
+                        <input type="text" id="nombreEjecutivo" required placeholder="Nombre del ejecutivo"
                             class="asefi-input">
                     </div>
                                         <div>
                         <label for="telefonoProspecto" class="asefi-label">Teléfono del Ejecutivo <span
                                 class="text-red-500">*</span></label>
-                        <input type="tel" id="telEjecutivo"                   placeholder="Ej. 5512345678"
+                        <input type="tel" id="telefonoEjecutivo"                   placeholder="Ej. 5512345678"
                   inputmode="numeric"
                   pattern="[0-9]*"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
@@ -285,7 +287,7 @@
                     <div>
                         <label for="montoCred" class="asefi-label">Monto de Crédito <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" id="montoCred" required placeholder="Ej. $50,000.00" class="asefi-input">
+                        <input type="text" id="montoCredito" required placeholder="Ej. $50,000.00" class="asefi-input">
                     </div>
 
                     <div>
@@ -360,6 +362,7 @@
                 </button>
                 <button type="submit"
                     class="w-full sm:w-auto px-7 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-sm flex items-center justify-center space-x-2">
+
                     <span>Registrar Crédito</span>
                 </button>
             </div>
