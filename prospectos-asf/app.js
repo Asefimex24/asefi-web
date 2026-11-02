@@ -70,7 +70,7 @@ async function enviarFormulario() {
 
   try {
     // Desactivar botón y mostrar animación
-    btn.disabled = true;
+    btn.disabled=true;
     spanBoton.textContent = "Procesando...";
     // spinner.classList.remove("d-none");
 
@@ -90,9 +90,10 @@ async function enviarFormulario() {
       Swal.fire({
         position: "top-center",
         icon: "success",
-        title: "Solicitud Registrada",
-        showConfirmButton: false,
-        timer: 1500,
+        title: `Registro Enviado`,
+        html:`Fecha: ${datos.fechaHora} <br>Nombre: ${datos.nombreProspecto} <br>Sucursal: ${datos.sucursal} <br>Producto: ${datos.producto} <br>Ejecutivo: ${datos.nombreEjecutivo}`,        
+        showConfirmButton: true,
+        // timer: 1500,
       });
 
       // alert(`Solicitud enviada correctamente para el cliente ${resultado.cliente}. Fila guardada: ${resultado.fila}`);
@@ -111,7 +112,7 @@ async function enviarFormulario() {
   finally {
     // Reactivar botón
     btn.disabled = false;
-    spanBoton.textContent = "Registrar Pago";
+    spanBoton.textContent = textoOriginal;
     // spinner.classList.add("d-none");
   }
 }
