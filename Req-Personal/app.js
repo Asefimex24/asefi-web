@@ -55,21 +55,6 @@ const AsefiApp = (function () {
         }
     }
 
-    function updateFileName(input) {
-        const label = document.getElementById('fileNameLabel');
-        if (!label) return;
-
-        if (input.files && input.files.length > 0) {
-            label.textContent = input.files[0].name;
-            label.classList.remove('text-slate-500');
-            label.classList.add('text-slate-900', 'font-medium');
-        } else {
-            label.textContent = 'Sin archivos seleccionados';
-            label.classList.add('text-slate-500');
-            label.classList.remove('text-slate-900', 'font-medium');
-        }
-    }
-
     function showAlert(text, isError = true) {
         const box = document.getElementById('alertBox');
         const icon = document.getElementById('alertIcon');
@@ -94,29 +79,14 @@ const AsefiApp = (function () {
         if (box) box.classList.add('hidden');
     }
 
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                const encoded = reader.result.split(',')[1];
-                resolve({
-                    base64: encoded,
-                    mimeType: file.type,
-                    fileName: file.name
-                });
-            };
-            reader.onerror = error => reject(error);
-        });
-    }
-
     async function handleSubmit(e) {
         e.preventDefault();
         closeAlert();
 
-        // IDs actualizados según tu HTML actual
+        // Lista de campos requeridos para validación
         const requiredFields = [
             'nombreSolicitante',
+            'personaAutoriza',
             'sucursal',
             'telefonoSolicitante',
             'correoSolicitante',
@@ -164,22 +134,10 @@ const AsefiApp = (function () {
             return;
         }
 
-        // Procesar archivo adjunto
-        const fileEl = document.getElementById('fileInput');
-        let fileData = null;
-        if (fileEl && fileEl.files && fileEl.files.length > 0) {
-            try {
-                fileData = await fileToBase64(fileEl.files[0]);
-            } catch (err) {
-                showAlert('Error al procesar el archivo adjunto.');
-                return;
-            }
-        }
-
-        // Construcción del objeto para las 31 columnas
         const obsExtra = document.getElementById('observacionesExtra') ? document.getElementById('observacionesExtra').value : '';
         const telContacto = document.getElementById('telefonoSolicitante').value;
 
+        // Construcción del objeto para las 31 columnas
         const payload = {
             marcaTemporal: document.getElementById('fechaSolicitud').value,
             correo: document.getElementById('correoSolicitante').value,
@@ -206,15 +164,14 @@ const AsefiApp = (function () {
             personalCargo: 'No especificado',
             equipoAsignado: 'Equipo estándar',
             funciones: document.getElementById('motivoRequisicion').value,
-            comentariosAdicionales: obsExtra,
+            comentariosAdicionales: obsExtra + ' [Tel: ' + telContacto + ']',
             nombreSolicita: document.getElementById('nombreSolicitante').value,
-            nombreAutoriza: 'Pendiente de Validación',
+            nombreAutoriza: document.getElementById('personaAutoriza').value, // Columna 28: Mapea al autorizador seleccionado
             salarioMensual: document.getElementById('sueldoPropuesto').value,
             localidad: document.getElementById('sucursal').value,
-            codigo: activeFolio,
-            file: fileData
+            codigo: activeFolio
         };
-        console.log(payload);
+
         const submitBtn = document.querySelector('button[type="submit"]');
         const origText = submitBtn.innerHTML;
         submitBtn.disabled = true;
@@ -232,11 +189,11 @@ const AsefiApp = (function () {
             document.getElementById('modalFolio').textContent = activeFolio;
             document.getElementById('modalFecha').textContent = payload.marcaTemporal;
             document.getElementById('resSolicitante').textContent = payload.nombreSolicita;
+            document.getElementById('resAutoriza').textContent = payload.nombreAutoriza;
             document.getElementById('resSucursalArea').textContent = `${payload.sucursal} (${payload.areaSolicita})`;
             document.getElementById('resPuesto').textContent = payload.nombrePuesto;
             document.getElementById('resPlazasTipo').textContent = `${payload.numVacantes} plaza(s) - ${document.getElementById('tipoVacante').value}`;
             document.getElementById('resSueldo').textContent = payload.salarioMensual;
-            document.getElementById('resArchivo').textContent = fileData ? fileData.fileName : 'Sin archivo adjunto';
 
             document.getElementById('receiptModal').classList.remove('hidden');
         } catch (error) {
@@ -256,13 +213,6 @@ const AsefiApp = (function () {
         const form = document.getElementById('requisicionForm');
         if (form) form.reset();
 
-        const label = document.getElementById('fileNameLabel');
-        if (label) {
-            label.textContent = 'Sin archivos seleccionados';
-            label.classList.add('text-slate-500');
-            label.classList.remove('text-slate-900', 'font-medium');
-        }
-
         toggleSustitucion('');
         closeAlert();
         generateFolio();
@@ -273,7 +223,6 @@ const AsefiApp = (function () {
     return {
         init,
         toggleSustitucion,
-        updateFileName,
         handleSubmit,
         closeModal,
         resetForm,
