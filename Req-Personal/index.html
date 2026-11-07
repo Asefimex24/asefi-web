@@ -146,7 +146,7 @@
             </div>
         </header>
 
-        <!-- ---------------------CAJA DE ALERTAS--------------------- -->
+        <!-- CAJA DE ALERTAS -->
         <div id="alertBox"
             class="hidden mb-6 p-4 rounded-xl border text-sm shadow-sm transition-all flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -186,6 +186,17 @@
                     </div>
 
                     <div>
+                        <label for="personaAutoriza" class="asefi-label">Persona que Autoriza <span
+                                class="text-red-500">*</span></label>
+                        <select id="personaAutoriza" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione autorizador...</option>
+                            <option value="AUTORIZADOR 1">AUTORIZADOR 1</option>
+                            <option value="AUTORIZADOR 2">AUTORIZADOR 2</option>
+                            <option value="AUTORIZADOR 3">AUTORIZADOR 3</option>
+                        </select>
+                    </div>
+
+                    <div>
                         <label for="sucursal" class="asefi-label">Sucursal <span class="text-red-500">*</span></label>
                         <select id="sucursal" required class="asefi-input cursor-pointer">
                             <option value="" disabled selected>Seleccione la sucursal...</option>
@@ -212,7 +223,25 @@
                             class="asefi-input">
                     </div>
 
-                    <div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: DETALLE DE LA VACANTE -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-briefcase text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">2. Detalle de la Vacante</h2>
+                </div>
+
+                <div class="space-y-4 sm:space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        <div class="sm:col-span-2">
+                            <label for="nombrePuesto" class="asefi-label">Nombre del Puesto Vacante <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" id="nombrePuesto" required
+                                placeholder="Ej. Analista Senior de Riesgos Financieros" class="asefi-input">
+                        </div>
+                        <div>
                         <label for="areaDepartamento" class="asefi-label">Área / Departamento <span
                                 class="text-red-500">*</span></label>
                         <select id="areaDepartamento" required class="asefi-input cursor-pointer">
@@ -226,24 +255,6 @@
                             <option value="JURÍDICO">Jurídico</option>
                         </select>
                     </div>
-                </div>
-            </section>
-
-            <!-- SECCIÓN 2: DETALLE DE LA VACANTE -->
-            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
-                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
-                    <i class="fa-solid fa-briefcase text-blue-600 text-lg"></i>
-                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">2. Detalle de la Vacante</h2>
-                </div>
-
-                <div class="space-y-4 sm:space-y-5">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                        <div class="sm:col-span-2">
-                            <label for="nombrePuesto" class="asefi-label">Nombre del Puesto Vacante <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" id="nombrePuesto" required
-                                placeholder="Ej. Analista Senior de Riesgos Financieros" class="asefi-input">
-                        </div>
                         <div>
                             <label for="numPlazas" class="asefi-label">Número de Plazas <span
                                     class="text-red-500">*</span></label>
@@ -436,37 +447,18 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN 5: EVIDENCIA / DOCUMENTO ADJUNTO Y OBSERVACIONES -->
+            <!-- SECCIÓN 5: OBSERVACIONES ADICIONALES -->
             <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-8">
                 <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
-                    <i class="fa-solid fa-paperclip text-blue-600 text-lg"></i>
-                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">5. Documentación y Observaciones</h2>
+                    <i class="fa-solid fa-comment-dots text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">5. Observaciones</h2>
                 </div>
 
-                <div class="space-y-5">
-                    <div>
-                        <label class="asefi-label">Perfil de Puesto o Documento Adjunto (PDF o Word)</label>
-                        <div class="flex items-center border border-slate-300 rounded-lg overflow-hidden bg-white">
-                            <label for="fileInput"
-                                class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium px-4 py-2.5 cursor-pointer border-r border-slate-300 transition-colors shrink-0">
-                                Seleccionar archivo
-                            </label>
-                            <input type="file" id="fileInput" onchange="AsefiApp.updateFileName(this)"
-                                accept=".pdf,.doc,.docx,.png,.jpg" class="hidden">
-                            <span id="fileNameLabel" class="text-slate-500 text-sm px-4 truncate">Sin archivos
-                                seleccionados</span>
-                        </div>
-                        <p class="text-xs text-slate-500 mt-1.5">Puede adjuntar el perfil del puesto previo, matriz de
-                            responsabilidades o formato de requisición previo (PDF, Word, PNG).</p>
-                    </div>
-
-                    <div>
-                        <label for="observacionesExtra" class="asefi-label">Observaciones o Comentarios
-                            Adicionales</label>
-                        <textarea id="observacionesExtra" rows="3"
-                            placeholder="Escriba aquí cualquier especificación técnica adicional para la búsqueda del candidato..."
-                            class="asefi-input resize-y"></textarea>
-                    </div>
+                <div>
+                    <label for="observacionesExtra" class="asefi-label">Observaciones o Comentarios Adicionales</label>
+                    <textarea id="observacionesExtra" rows="3"
+                        placeholder="Escriba aquí cualquier especificación técnica adicional para la búsqueda del candidato..."
+                        class="asefi-input resize-y"></textarea>
                 </div>
             </section>
 
@@ -523,6 +515,10 @@
                         <span id="resSolicitante" class="font-medium text-slate-900 text-right"></span>
                     </div>
                     <div class="flex justify-between py-1.5 border-b border-slate-100">
+                        <span class="text-slate-500">Persona que Autoriza:</span>
+                        <span id="resAutoriza" class="font-medium text-slate-900 text-right"></span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-100">
                         <span class="text-slate-500">Sucursal / Área:</span>
                         <span id="resSucursalArea" class="font-medium text-slate-900 text-right"></span>
                     </div>
@@ -537,10 +533,6 @@
                     <div class="flex justify-between py-1.5 border-b border-slate-100">
                         <span class="text-slate-500">Sueldo Propuesto:</span>
                         <span id="resSueldo" class="font-medium text-slate-900 text-right"></span>
-                    </div>
-                    <div class="flex justify-between py-1.5 border-b border-slate-100">
-                        <span class="text-slate-500">Archivo Adjunto:</span>
-                        <span id="resArchivo" class="font-medium text-slate-900 text-right"></span>
                     </div>
                 </div>
 
