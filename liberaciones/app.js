@@ -110,6 +110,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputCredito = document.getElementById("credito");
 
   if (inputCredito) {
+<<<<<<< HEAD
+    // Variable para evitar ejecuciones duplicadas si se presiona Enter y luego se dispara 'blur'
+    let ejecutandoConsulta = false;
+
+    async function procesarConsulta() {
+      if (ejecutandoConsulta) return;
+
+      const tipoSolicitud = document.getElementById("tipoSolicitud")?.value;
+      const numCredito = inputCredito.value.trim();
+
+      if (tipoSolicitud === "Solventación" && numCredito !== "") {
+        ejecutandoConsulta = true;
+        try {
+          await consultarCreditoAPI(numCredito);
+
+          // Mover foco al campo comentario
+          const campoComentario = document.getElementById("comentario");
+          if (campoComentario) campoComentario.focus();
+        } finally {
+          ejecutandoConsulta = false;
+        }
+=======
     // Variable para evitar consultas duplicadas si se disparan blur y enter al mismo tiempo
     let ejecutandoBusqueda = false;
 
@@ -142,8 +164,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === "Tab" || e.key === "Enter") {
         e.preventDefault(); // Evita salto no deseado antes de consultar
         inputCredito.blur(); // Dispara el blur y oculta el teclado en móviles
+>>>>>>> 4c41c140a90741d0dd7efb37d4e8ff720d918bc7
       }
-    });
+    }
+
   }
 });
 

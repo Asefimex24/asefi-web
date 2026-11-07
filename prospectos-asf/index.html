@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASEFIMEX - Registro de Crédito</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .asefi-input {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.875rem;
+            color: #1e293b;
+            transition: all 0.15s ease-in-out;
+            width: 100%;
+        }
+
+        .asefi-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .asefi-input-disabled {
+            background-color: #ebf0f5 !important;
+            color: #475569 !important;
+            border-color: #cbd5e1 !important;
+            cursor: not-allowed;
+        }
+
+        .asefi-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 0.375rem;
+        }
+
+        @media print {
+            body {
+                background: #ffffff !important;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #printableReceipt,
+            #printableReceipt * {
+                visibility: visible;
+            }
+
+            #printableReceipt {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-full py-6 sm:py-8 px-3 sm:px-6 lg:px-8">
+
+    <div class="max-w-5xl mx-auto">
+
+        <!-- ENCABEZADO PRINCIPAL -->
+        <header class="bg-[#131c2e] text-white rounded-2xl p-5 sm:p-7 mb-6 shadow-md border border-slate-800">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                <div class="flex items-start space-x-3.5">
+                    <div class="mt-1 text-white text-2xl sm:text-3xl shrink-0">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
+                            Registro de Prospectos Tradicionales
+                        </h1>
+                        <!-- <p class="text-slate-400 text-xs sm:text-sm mt-0.5">
+                            Gestión y captura de expedientes crediticios ASEFIMEX
+                        </p> -->
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-center justify-between md:justify-end space-x-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-700/60">
+                    <a type="button" href="../index.html"
+                        class="bg-slate-800/90 hover:bg-slate-700 text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2 shrink-0">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                        <span>Regresar al menú</span>
+                    </a>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- CONTENEDOR DE ALERTAS -->
+        <div id="alertBox"
+            class="hidden mb-6 p-4 rounded-xl border text-sm shadow-sm transition-all flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i id="alertIcon" class="fa-solid text-lg"></i>
+                <span id="alertText" class="font-medium"></span>
+            </div>
+            <button type="button" onclick="AsefiApp.closeAlert()" class="text-slate-400 hover:text-slate-600 p-1">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+        </div>
+
+        <!-- FORMULARIO PRINCIPAL -->
+        <form id="prospectoForm">
+
+            <!-- SECCIÓN 1: DATOS DEL CLIENTE Y REGISTRO -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-user-check text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">1. Datos del Prospecto y Registro</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    <div>
+                        <label class="asefi-label">Fecha / Hora</label>
+                        <input type="text" id="fechaHora" readonly class="asefi-input asefi-input-disabled font-mono">
+                    </div>
+
+                    <div>
+                        <label for="nombreprospecto" class="asefi-label">Nombre del Prospecto <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="nombreProspecto" required placeholder="Nombre completo"
+                            class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="telefonoProspecto" class="asefi-label">Teléfono del Prospecto <span
+                                class="text-red-500">*</span></label>
+                        <input type="tel" id="telefonoProspecto"                   placeholder="Ej. 5512345678"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                  required placeholder="Ej. 9611234567"
+                            class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="sucursal" class="asefi-label">Sucursal <span class="text-red-500">*</span></label>
+                        <select id="sucursal" required class="asefi-input cursor-pointer">
+                  <option value="" disabled selected>Seleccione la sucursal...</option>
+                  <option value="ACAYUCAN VERACRUZ">ACAYUCAN VERACRUZ</option>
+                  <option value="BOCA DEL RIO, VERACRUZ">BOCA DEL RIO, VERACRUZ</option>
+                  <option value="CANCUN QUINTANA ROO">CANCUN QUINTANA ROO</option>
+                  <option value="CIUDAD DE MEXICO">CIUDAD DE MEXICO</option>
+                  <option value="CUAUTLA, MORELOS">CUAUTLA, MORELOS</option>
+                  <option value="ESCARCEGA CAMPECHE">ESCARCEGA CAMPECHE</option>
+                  <option value="FELIPE CARRILLO PUERTO, QUINTANA ROO">FELIPE CARRILLO PUERTO, QUINTANA ROO</option>
+                  <option value="GUADALAJARA, JALISCO">GUADALAJARA, JALISCO</option>
+                  <option value="JUCHITAN DE ZARAGOZA, OAXACA">JUCHITAN DE ZARAGOZA, OAXACA</option>
+                  <option value="MANZANILLO COLIMA">MANZANILLO COLIMA</option>
+                  <option value="MERIDA, YUCATAN">MERIDA, YUCATAN</option>
+                  <option value="MORELIA, MICHOACAN">MORELIA, MICHOACAN</option>
+                  <option value="OAXACA, OAXACA">OAXACA, OAXACA</option>
+                  <option value="OCOSINGO CHIAPAS">OCOSINGO CHIAPAS</option>
+                  <option value="PALENQUE CHIAPAS">PALENQUE CHIAPAS</option>
+                  <option value="PARAISO TABASCO">PARAISO TABASCO</option>
+                  <option value="CIUDAD DEL CARMEN CAMPECHE">CIUDAD DEL CARMEN CAMPECHE</option>
+                  <option value="PLAYA DEL CARMEN QROO">PLAYA DEL CARMEN QROO</option>
+                  <option value="URUAPAN, MICHOACAN">URUAPAN, MICHOACAN</option>
+                  <option value="MENDIZABAL, PUEBLA">MENDIZABAL, PUEBLA</option>
+                  <option value="SAN FRANCISCO DE CAMPECHE,CAMPECHE">SAN FRANCISCO DE CAMPECHE,CAMPECHE</option>
+                  <option value="TICUL,YUCATAN">TICUL,YUCATAN</option>
+                  <option value="IZÚCAR DE MATAMOROS, PUEBLA">IZÚCAR DE MATAMOROS, PUEBLA</option>
+                  <option value="VILLA LÁZARO CÁRDENAS, PUEBLA">VILLA LÁZARO CÁRDENAS, PUEBLA</option>
+                  <option value="SAN JOSE CHILTEPEC,OAXACA">SAN JOSE CHILTEPEC, OAXACA</option>
+                  <option value="SANTO DOMINGO TEHUANTEPEC, OAXACA">SANTO DOMINGO TEHUANTEPEC, OAXACA</option>
+                  <option value="TAPACHULA CHIAPAS">TAPACHULA, CHIAPAS</option>
+                  <option value="TUXTLA GUTIERREZ, CHIAPAS">TUXTLA GUTIERREZ, CHIAPAS</option>
+                  <option value="COMITAN DE DOMINGUEZ, CHIAPAS">COMITAN DE DOMINGUEZ, CHIAPAS</option>
+                  <option value="TONALA, CHIAPAS">TONALA, CHIAPAS</option>
+                  <option value="OAXACA II">OAXACA II</option>
+                  <option value="PUERTO ESCONDIDO, OAXACA">PUERTO ESCONDIDO, OAXACA</option>
+                  <option value="VILLAHERMOSA, TABASCO">VILLAHERMOSA, TABASCO</option>
+                  <option value="AYUTLA DE LOS LIBRES, GUERRERO">AYUTLA DE LOS LIBRES, GUERRERO</option>
+                  <option value="TENOSIQUE, TABASCO">TENOSIQUE, TABASCO</option>
+                  <option value="JOSÉ MARÍA MORELOS, Q. ROO">JOSÉ MARÍA MORELOS, Q.ROO</option>
+                  <option value="CHILPANCINGO, GUERRERO">CHILPANCINGO, GUERRERO</option>
+                  <option value="MARIANO ESCOBEDO, VERACRUZ">MARIANO ESCOBEDO, VERACRUZ</option>
+                  <option value="MATIAS ROMERO, OAXACA">MATIAS ROMERO, OAXACA</option>
+                  <option value="ZIMATLAN DE ALVAREZ, OAXACA">ZIMATLAN DE ALVAREZ, OAXACA</option>
+                  <option value="HUIMANGUILLO, TABASCO">HUIMANGUILLO, TABASCO</option>
+                  <option value="MACUSPANA, TABASCO">MACUSPANA, TABASCO</option>
+                  <option value="NUEVA PALESTINA, CHIAPAS">NUEVA PALESTINA, CHIAPAS</option>
+                  <option value="TAPILULA, CHIAPAS">TAPILULA, CHIAPAS</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="ejecutivo" class="asefi-label">Ejecutivo <span class="text-red-500">*</span></label>
+                        <input type="text" id="nombreEjecutivo" required placeholder="Nombre del ejecutivo"
+                            class="asefi-input">
+                    </div>
+                                        <div>
+                        <label for="telefonoProspecto" class="asefi-label">Teléfono del Ejecutivo <span
+                                class="text-red-500">*</span></label>
+                        <input type="tel" id="telefonoEjecutivo"                   placeholder="Ej. 5512345678"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                  required placeholder="Ej. 9611234567"
+                            class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="horarioLlamada" class="asefi-label">Horario Preferido de Llamada <span
+                                class="text-red-500">*</span></label>
+                        <select id="horaLlamada" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione un horario...</option>
+                            <option value="9:00 am - 12:00 pm">9:00 am - 12:00 pm</option>
+                            <option value="12:00 pm - 02:00 pm">12:00 pm - 02:00 pm</option>
+                            <option value="03:00 pm - 05:00 pm">03:00 pm - 05:00 pm</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: DETALLES DEL CRÉDITO -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-6">
+                <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-coins text-blue-600 text-lg"></i>
+                    <h2 class="text-slate-900 font-bold text-base sm:text-lg">2. Detalles del Crédito y Asignación</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    <div>
+                        <label for="producto" class="asefi-label">Producto <span class="text-red-500">*</span></label>
+                        <select id="producto" required class="asefi-input cursor-pointer">
+                            <option value="" disabled selected>Seleccione opción...</option>
+                <option value="C-MOVIL">C-MOVIL</option>
+                <option value="C-FACIL">C-FACIL</option>
+                <option value="C-ESPCIAL">C-ESPECIAL</option>
+                <option value="C-EMPRENDEDOR">C-EMPRENDEDOR</option>
+                <option value="C-COSECHA">C-COSECHA</option>
+                <option value="C-AUTO">C-AUTO</option>
+                <option value="C-DISTRIBUIDOR">C-DISTRIBUIDOR</option>
+                <option value="CREDICONTADO">CREDICONTADO</option>
+                <option value="C-LIQUIDEZ">C-LIQUIDEZ</option>
+                <option value="C-PREFERENTE">C-PREFERENTE</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="montoCred" class="asefi-label">Monto de Crédito <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="montoCredito" required placeholder="Ej. $50,000.00" class="asefi-input">
+                    </div>
+
+                    <div>
+                        <label for="distribuidor" class="asefi-label">Distribuidor / Promotor <span
+                                class="text-red-500">*</span></label>
+                                <select id="distribuidor" name="distribuidor" required class="asefi-input cursor-pointer">
+                                    <option value="" disabled selected>Seleccione distribuidor...</option>
+                  <option value="ASEFIMEX">ASEFIMEX</option>
+                  <option value="BAJAJ COLIMA">BAJAJ COLIMA</option>
+                  <option value="BAJAJ ORIENTE">BAJAJ ORIENTE</option>
+                  <option value="COMERCIALIZADORA GOMEZ IBARRA DE LA LAGUNA S.A. DE C.V.">COMERCIALIZADORA GOMEZ IBARRA DE LA LAGUNA S.A. DE C.V.</option>
+                  <option value="CORPORATIVO">CORPORATIVO</option>
+                  <option value="DAVID COUTIÑO SANCHEZ">DAVID COUTIÑO SANCHEZ</option>
+                  <option value="EDDY FRANCISCO PENAGOS ZAMORA">EDDY FRANCISCO PENAGOS ZAMORA</option>
+                  <option value="EURO MOTOS">EURO MOTOS</option>
+                  <option value="GERARDO VICENTE CASTAÑEDA VILLICAÑA">GERARDO VICENTE CASTAÑEDA VILLICAÑA</option>
+                  <option value="GUADALUPE COUTIÑO LARA">GUADALUPE COUTIÑO LARA</option>
+                  <option value="GUILLERMO ALDANA AGUILAR">GUILLERMO ALDANA AGUILAR</option>
+                  <option value="INTEGRA MOVIL">INTEGRA MOVIL</option>
+                  <option value="IRENO RAMOS GARCIA">IRENO RAMOS GARCIA</option>
+                  <option value="JESUS FLORES ALEJO">JESUS FLORES ALEJO</option>
+                  <option value="LUIS ENRIQUE RUIZ COUTIÑO">LUIS ENRIQUE RUIZ COUTIÑO</option>
+                  <option value="MANUEL ENRIQUE MARTINEZ AGUILAR">MANUEL ENRIQUE MARTINEZ AGUILAR</option>
+                  <option value="MF BIKERS S.A. DE C.V.">MF BIKERS S.A. DE C.V.</option>
+                  <option value="MOTO GALERIA PENINSULA">MOTO GALERIA PENINSULA</option>
+                  <option value="MOTO GALERIA S.A. DE C.V.">MOTO GALERIA S.A. DE C.V.</option>
+                  <option value="MOTO RAIZER (ALEJANDRO GARCIA VIDAL)">MOTO RAIZER (ALEJANDRO GARCIA VIDAL)</option>
+                  <option value="SHINERAY (MOTO GALERIA)">SHINERAY (MOTO GALERIA)</option>
+                  <option value="TRANSPEOPLE">TRANSPEOPLE</option>
+                  <option value="TUMOTO DE BOCA DEL RIO">TUMOTO DE BOCA DEL RIO</option>
+                  <option value="VERACRUZANA DE MOTOS (HONDA)">VERACRUZANA DE MOTOS (HONDA)</option>
+                  <option value="VICTOR ANDRES TREJO TAPIA">VICTOR ANDRES TREJO TAPIA</option>
+                  <option value="YAMAHA">YAMAHA</option>
+                  <option value="ZEFERINO MARTINEZ GARCIA">ZEFERINO MARTINEZ GARCIA</option>
+                                </select>
+                        <!-- <input type="text" id="distribuidor" required placeholder="Nombre o clave del distribuidor"
+                            class="asefi-input"> -->
+                    </div>
+
+                    <div class="sm:col-span-2 lg:col-span-3">
+                        <label for="especificaciones" class="asefi-label">Especificaciones del Crédito <span
+                                class="text-red-500">*</span></label>
+                        <textarea id="especificaciones" rows="2" required
+                            placeholder="Detalles particulares de la solicitud..."
+                            class="asefi-input resize-y"></textarea>
+                    </div>
+                </div>
+            </section>
+
+        <!-- SECCIÓN 3: DOCUMENTOS Y COMENTARIOS -->
+        <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 mb-8">
+            <div class="flex items-center space-x-2.5 mb-5 pb-3 border-b border-slate-100">
+                <i class="fa-solid fa-folder-open text-blue-600 text-lg"></i>
+                <h2 class="text-slate-900 font-bold text-base sm:text-lg">3. Carga de Documentación</h2>
+            </div>
+        
+            <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 sm:gap-5">
+                <div>
+                    <label for="ineFrente" class="asefi-label">INE Frente (Imagen o PDF)</label>
+                    <input type="file" id="ineFrente" accept="image/*,.pdf"
+                        class="asefi-input file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                </div>
+        
+            </div>
+        </section>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-2">
+                <button type="button" onclick="AsefiApp.resetForm()"
+                    class="w-full sm:w-auto px-6 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 font-medium text-sm hover:bg-slate-50 transition-colors shadow-sm">
+                    Limpiar Formulario
+                </button>
+                <button type="submit"
+                    class="w-full sm:w-auto px-7 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-sm flex items-center justify-center space-x-2">
+
+                    <span>Registrar Crédito</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+
+
+    <script src="app.js"></script>
+</body>
+
+</html>
