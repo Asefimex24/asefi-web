@@ -87,7 +87,7 @@ async function enviarFormulario() {
         position: "top-center",
         icon: "success",
         title: `Registro Enviado`,
-        html:`Fecha: ${datos.fechaHora} <br>Nombre: ${datos.nombreProspecto} <br>Sucursal: ${datos.sucursal} <br>Distribuidor: ${datos.distribuidor} <br>CorreoVendedor: ${datos.correoVendedor}`,        
+        html:`Fecha: ${datos.fechaHora} <br>Nombre: ${datos.nombreProspecto} <br>Sucursal: ${datos.sucursal} <br>Distribuidor: ${datos.distribuidor} <br>Correo: ${datos.correoVendedor}`,        
         showConfirmButton: true,
         // timer: 1500,
       });
