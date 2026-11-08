@@ -1,192 +1,114 @@
-/**
- * Lógica Web - Registro de Crédito / Prospecto ASEFIMEX
- * Archivo: app.js
- */
+window.onload = establecerFechaActual;
+function establecerFechaActual() {
+  const ahora = new Date();
 
-// ⚠️ REEMPLAZA ESTA URL CON LA QUE TE DÉ GOOGLE APPS SCRIPT AL PUBLICAR
-const WEB_APP_URL = "";
+  const anio = ahora.getFullYear();
+  const mes = String(ahora.getMonth() + 1).padStart(2, "0");
+  const dia = String(ahora.getDate()).padStart(2, "0");
+  const hora = String(ahora.getHours()).padStart(2, "0");
+  const minutos = String(ahora.getMinutes()).padStart(2, "0");
+  const segundos = String(ahora.getSeconds()).padStart(2, "0");
+  const fechaCompleta = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
+  document.getElementById("fechaHora").value = fechaCompleta;
+}
 
-const AsefiApp = (function () {
+function convertirBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+}
 
-    // Inicialización de la app
-    function init() {
-        updateTimestamp();
-    }
 
-    // Marca de tiempo en el campo readonly fechaHora
-    function updateTimestamp() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
+document.getElementById("prospectoFormDist").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-        const formatted = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-        const fechaInput = document.getElementById('fechaHora');
-        if (fechaInput) {
-            fechaInput.value = formatted;
-            fechaInput.defaultValue = formatted;
-        }
-    }
+  await enviarFormulario();
+});
 
-    // Convierte un archivo tipo File a Base64
-    function fileToBase64(fileInputId) {
-        return new Promise((resolve) => {
-            const input = document.getElementById(fileInputId);
-            if (!input || !input.files || input.files.length === 0) {
-                resolve('N/A');
-                return;
-            }
 
-            const file = input.files[0];
-            const reader = new FileReader();
+async function enviarFormulario() {
+  //obtener elemtno spinner
+   const form = document.getElementById("prospectoFormDist");
+  const btn = form.querySelector('button[type="submit"]');
+  const spanBoton = btn.querySelector("span");
+  const textoOriginal = spanBoton ? spanBoton.textContent : "Registrar Prospecto";
 
-            reader.onload = function () {
-                resolve(reader.result);
-            };
+  // Procesar archivo INE Frente (si fue cargado)
+  const inputIne = document.getElementById("ineFrente");
+  let archivoInePayload = null;
 
-            reader.onerror = function () {
-                resolve('ERROR_LECTURA');
-            };
+  if (inputIne && inputIne.files.length > 0) {
+    const archivo = inputIne.files[0];
+    const base64 = await convertirBase64(archivo);
 
-            reader.readAsDataURL(file);
-        });
-    }
-
-    // Muestra mensajes de alerta en pantalla
-    function showAlert(text, isError = true) {
-        const box = document.getElementById('alertBox');
-        const icon = document.getElementById('alertIcon');
-        const msg = document.getElementById('alertText');
-        if (!box || !icon || !msg) return;
-
-        if (isError) {
-            box.className = 'mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-800 text-sm shadow-sm flex items-center justify-between';
-            icon.className = 'fa-solid fa-circle-exclamation text-red-600 text-lg';
-        } else {
-            box.className = 'mb-6 p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 text-sm shadow-sm flex items-center justify-between';
-            icon.className = 'fa-solid fa-circle-check text-emerald-600 text-lg';
-        }
-
-        msg.textContent = text;
-        box.classList.remove('hidden');
-        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // Cierra la caja de alertas
-    function closeAlert() {
-        const box = document.getElementById('alertBox');
-        if (box) box.classList.add('hidden');
-    }
-
-    // Envío y validación del formulario
-    async function handleSubmit(e) {
-        e.preventDefault();
-        closeAlert();
-
-        if (!WEB_APP_URL || WEB_APP_URL.trim() === "" || WEB_APP_URL.includes("TU_SCRIPT_ID_AQUI")) {
-            showAlert('Falta configurar la URL de Google Apps Script en la variable WEB_APP_URL dentro de app.js');
-            return;
-        }
-
-        // Lista de campos obligatorios alineados con tu index.html
-        const requiredFields = [
-            'nombreprospecto', 'telefonoProspecto', 'sucursal', 'ejecutivo',
-            'horarioLlamada', 'producto', 'montoCred', 'distribuidor', 'especificaciones'
-        ];
-
-        let missing = false;
-        requiredFields.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el || !el.value.trim()) {
-                if (el) el.classList.add('border-red-500');
-                missing = true;
-            } else {
-                el.classList.remove('border-red-500');
-            }
-        });
-
-        if (missing) {
-            showAlert('Por favor complete todos los campos obligatorios marcados con asterisco (*).');
-            return;
-        }
-
-        const submitBtn = document.querySelector('button[type="submit"]');
-        const origText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i><span>Procesando datos y guardando...</span>';
-
-        try {
-            // Conversión del archivo adjunto a Base64
-            const b64IneFrente = await fileToBase64('ineFrente');
-
-            const payload = {
-                fechaHora: document.getElementById('fechaHora').value,
-                nombreprospecto: document.getElementById('nombreprospecto').value,
-                telefonoProspecto: document.getElementById('telefonoProspecto').value,
-                sucursal: document.getElementById('sucursal').value,
-                ejecutivo: document.getElementById('ejecutivo').value,
-                horarioLlamada: document.getElementById('horarioLlamada').value,
-                producto: document.getElementById('producto').value,
-                montoCred: document.getElementById('montoCred').value,
-                distribuidor: document.getElementById('distribuidor').value,
-                especificaciones: document.getElementById('especificaciones').value,
-                ineFrente: b64IneFrente,
-                comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
-            };
-
-            await fetch(WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            });
-
-            // Llenar Modal de Comprobante
-            document.getElementById('modalNumRegistro').textContent = "REG-" + Math.floor(100000 + Math.random() * 900000);
-            document.getElementById('modalFechaHora').textContent = payload.fechaHora;
-            document.getElementById('resCliente').textContent = payload.nombreprospecto;
-            document.getElementById('resTel').textContent = payload.telefonoProspecto;
-            document.getElementById('resSucEjecutivo').textContent = `${payload.sucursal} (${payload.ejecutivo})`;
-            document.getElementById('resProdMonto').textContent = `${payload.producto} - $${payload.montoCred}`;
-            document.getElementById('resRenovAnalista').textContent = `Distribuidor: ${payload.distribuidor}`;
-
-            document.getElementById('receiptModal').classList.remove('hidden');
-        } catch (error) {
-            showAlert('Ocurrió un error al registrar la solicitud. Verifique su conexión.');
-            console.error(error);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = origText;
-        }
-    }
-
-    // Cierra el modal de comprobante
-    function closeModal() {
-        document.getElementById('receiptModal').classList.add('hidden');
-    }
-
-    // Resetea el formulario
-    function resetForm() {
-        const form = document.getElementById('creditoForm');
-        if (form) form.reset();
-
-        closeAlert();
-        updateTimestamp();
-        document.querySelectorAll('.border-red-500').forEach(el => el.classList.remove('border-red-500'));
-    }
-
-    return {
-        init,
-        handleSubmit,
-        closeModal,
-        resetForm,
-        closeAlert
+    archivoInePayload = {
+      base64: base64,
+      nombre: archivo.name,
+      mimeType: archivo.type || "application/octet-stream"
     };
-})();
+  }
+  //generar array datos
+  const datos = {
+    fechaHora: document.getElementById("fechaHora").value,
+    nombreProspecto: document.getElementById("nombreProspecto").value.trim(),
+    telefonoVendedor: document.getElementById("telefonoVendedor").value.trim(),    
+    correoVendedor: document.getElementById("correoVendedor").value.trim(),    
+    sucursal: document.getElementById("sucursal").value,
+    distribuidor: document.getElementById("distribuidor").value,
+    especificaciones: document.getElementById("especificaciones").value.trim(),
+    archivoIne: archivoInePayload
+  };
 
-window.onload = function () {
-    AsefiApp.init();
-};
+  const API_URL = "https://script.google.com/macros/s/AKfycbzvjHm2UiJ5puPwtGRU_ykPduKq8jYOYMiOmaMSxVHy8ZWxLpB2eYNa_FB7i26W2Uxb/exec";
+
+  try {
+    // Desactivar botón y mostrar animación
+    btn.disabled=true;
+    spanBoton.textContent = "Procesando...";
+    // spinner.classList.remove("d-none");
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      // Usamos text/plain para evitar el preflight de CORS y permitir leer la respuesta
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify(datos),
+    });
+
+    // Obtenemos el texto/JSON devuelto por Apps Script
+    const resultado = await response.json();
+
+    if (resultado.status=="success") {
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: `Registro Enviado`,
+        html:`Fecha: ${datos.fechaHora} <br>Nombre: ${datos.nombreProspecto} <br>Sucursal: ${datos.sucursal} <br>Distribuidor: ${datos.distribuidor} <br>CorreoVendedor: ${datos.correoVendedor}`,        
+        showConfirmButton: true,
+        // timer: 1500,
+      });
+
+      // alert(`Solicitud enviada correctamente para el cliente ${resultado.cliente}. Fila guardada: ${resultado.fila}`);
+      document.getElementById("prospectoFormDist").reset();
+      establecerFechaActual();
+
+    } else {
+      // Muestra el mensaje de error si ocurrió una excepción en Apps Script
+      alert("Error en el servidor: " + (resultado.error || "Ocurrió un problema desconocido"));
+    }
+  } 
+  catch (error) {
+    console.error("Error al realizar el fetch:", error);
+    alert("Ocurrió un error al enviar la solicitud.");
+  } 
+  finally {
+    // Reactivar botón
+    btn.disabled = false;
+    spanBoton.textContent = textoOriginal;
+    // spinner.classList.add("d-none");
+  }
+}
